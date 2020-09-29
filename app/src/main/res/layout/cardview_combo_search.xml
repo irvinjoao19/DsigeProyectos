@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="20dp"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="20dp"
+              android:layout_marginBottom="10dp"
+              android:orientation="vertical">
+
+    <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/textViewId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/abreviatura"
+                android:layout_weight="0.5"
+                android:maxLines="2"
+                android:singleLine="true"/>
+
+        <TextView
+                android:id="@+id/textViewGuiaSalida"
+                android:layout_width="0dp"
+                android:text="@string/guia_salida"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:ellipsize="end"
+                android:visibility="gone"
+                android:gravity="end"/>
+    </LinearLayout>
+
+
+    <TextView
+            android:id="@+id/textViewNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:ellipsize="end"
+            android:maxLines="2"/>
+
+    <LinearLayout
+            android:id="@+id/linearLayoutDetalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/textViewAbreviatura"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/abreviatura"
+                android:layout_weight="0.5"
+                android:maxLines="2"
+                android:singleLine="true"/>
+
+        <TextView
+                android:id="@+id/textViewStock"
+                android:layout_width="0dp"
+                android:textColor="@color/colorPrimaryText"
+                android:text="@string/stock"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_weight="0.5"
+                android:ellipsize="end"
+                android:gravity="end"/>
+    </LinearLayout>
+</LinearLayout>

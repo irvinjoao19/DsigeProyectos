@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/camera"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/camera"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/ok"
+        android:icon="@drawable/ic_done"
+        android:title="@string/ok"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/eraser"
+        android:icon="@drawable/ic_eraser"
+        android:title="@string/eraser"
+        app:showAsAction="ifRoom" />
+</menu>
