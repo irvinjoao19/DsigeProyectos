@@ -44,9 +44,16 @@ import com.dsige.dsigeproyectos.data.local.model.trinidad.*
         TipoDevolucion::class,
         Pedido::class,
         Orden::class,
-        OrdenDetalle::class
+        OrdenDetalle::class,
+        Requerimiento::class,
+        RequerimientoDetalle::class,
+        RequerimientoMaterial::class,
+        Delegacion::class,
+        RequerimientoEstado::class,
+        RequerimientoTipo::class,
+        RequerimientoCentroCosto::class
     ],
-    version = 11,
+    version = 18        ,
     exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
@@ -89,6 +96,14 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun pedidoDao(): PedidoDao
     abstract fun ordenDao(): OrdenDao
     abstract fun ordenDetalleDao(): OrdenDetalleDao
+    abstract fun requerimientoDao(): RequerimientoDao
+    abstract fun requerimientoDetalleDao(): RequerimientoDetalleDao
+    abstract fun delegacionDao(): DelegacionDao
+    abstract fun requerimientoMaterialDao(): RequerimientoMaterialDao
+
+    abstract fun requerimientoEstadoDao(): RequerimientoEstadoDao
+    abstract fun requerimientoTipoDao(): RequerimientoTipoDao
+    abstract fun requerimientoCentroCostoDao(): RequerimientoCentroCostoDao
 
     companion object {
         @Volatile

@@ -13,14 +13,15 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
+<!--        app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"-->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
+<!--        app:tabMode="scrollable"-->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
@@ -28,7 +29,6 @@
             android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             app:tabIndicatorColor="@color/colorYellow"
-            app:tabMode="scrollable"
             app:tabTextColor="@color/colorWhite"
             tools:ignore="UnusedAttribute"/>
     </com.google.android.material.appbar.AppBarLayout>

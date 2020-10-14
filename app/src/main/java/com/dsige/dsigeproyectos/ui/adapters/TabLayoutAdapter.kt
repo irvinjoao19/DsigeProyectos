@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.dsige.dsigeproyectos.ui.fragments.engie.*
+import com.dsige.dsigeproyectos.ui.fragments.logistica.*
 
 abstract class TabLayoutAdapter {
 
@@ -40,9 +41,35 @@ abstract class TabLayoutAdapter {
         FragmentStatePagerAdapter(fm, numberOfTabs) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> SolicitudGeneralFragment.newInstance(id, tipoMaterialSolicitud, tipoSolicitudId)
-                1 -> SolicitudMaterialFragment.newInstance(id, tipoMaterialSolicitud, tipoSolicitudId)
+                0 -> SolicitudGeneralFragment.newInstance(
+                    id,
+                    tipoMaterialSolicitud,
+                    tipoSolicitudId
+                )
+                1 -> SolicitudMaterialFragment.newInstance(
+                    id,
+                    tipoMaterialSolicitud,
+                    tipoSolicitudId
+                )
                 2 -> SolicitudPhotoFragment.newInstance(id, tipoMaterialSolicitud, tipoSolicitudId)
+                else -> Fragment()
+            }
+        }
+
+        override fun getCount(): Int {
+            return numberOfTabs
+        }
+    }
+
+    class TabLayoutRequerimientoAdapter(
+        fm: FragmentManager, private val numberOfTabs: Int,
+        val id: Int, var usuarioId: String
+    ) :
+        FragmentStatePagerAdapter(fm, numberOfTabs) {
+        override fun getItem(position: Int): Fragment {
+            return when (position) {
+                0 -> GeneralFragment.newInstance(id, usuarioId)
+                1 -> MaterialFragment.newInstance(id)
                 else -> Fragment()
             }
         }

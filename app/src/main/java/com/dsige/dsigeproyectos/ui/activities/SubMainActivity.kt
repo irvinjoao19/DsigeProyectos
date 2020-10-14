@@ -83,6 +83,7 @@ class SubMainActivity : DaggerAppCompatActivity() {
                     2 -> when (m.id) {
                         2 -> startActivity(
                             Intent(this@SubMainActivity, RequerimientoActivity::class.java)
+                                .putExtra("usuarioId", usuarioId)
                         )
                         3 -> startActivity(
                             Intent(this@SubMainActivity, MenuAprobacionActivity::class.java)

@@ -33,4 +33,7 @@ interface OrdenDetalleDao {
 
     @Query("DELETE FROM OrdenDetalle")
     fun deleteAll()
+
+    @Query("SELECT * FROM OrdenDetalle WHERE materialId =:a")
+    fun getOrdenDetalleByCodigo(a: String): LiveData<List<OrdenDetalle>>
 }

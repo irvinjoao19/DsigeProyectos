@@ -92,6 +92,10 @@ interface ApiService {
     @POST("SaveRegistroPhoto")
     fun saveRegistroPhoto(@Body query: RequestBody): Observable<Mensaje>
 
+    @Headers("Cache-Control: no-cache")
+    @POST("SaveRequerimiento")
+    fun saveRequerimiento(@Body query: RequestBody): Observable<Mensaje>
+
 
     // TODO ENGIE
 

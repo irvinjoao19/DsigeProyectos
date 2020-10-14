@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dsige.dsigeproyectos.R
-import com.dsige.dsigeproyectos.data.local.model.logistica.Orden
+import com.dsige.dsigeproyectos.data.local.model.logistica.OrdenDetalle
 import com.dsige.dsigeproyectos.ui.listeners.OnItemClickListener
 import kotlinx.android.synthetic.main.cardview_orden_detalle.view.*
 
-class OrdenDetalleAdapter(var listener: OnItemClickListener.OrdenListener) :
+class OrdenDetalleAdapter(var listener: OnItemClickListener.OrdenDetalleListener) :
     RecyclerView.Adapter<OrdenDetalleAdapter.ViewHolder>() {
 
-    private var parte = emptyList<Orden>()
+    private var parte = emptyList<OrdenDetalle>()
 
-    fun addItems(list: List<Orden>) {
+    fun addItems(list: List<OrdenDetalle>) {
         parte = list
         notifyDataSetChanged()
     }
@@ -34,13 +34,13 @@ class OrdenDetalleAdapter(var listener: OnItemClickListener.OrdenListener) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(p: Orden, listener: OnItemClickListener.OrdenListener) = with(itemView) {
-            textView1.text = p.articulo
-            textView2.text = p.nombreArticulo
-            textView30.text = String.format("%s", p.cantidadAprobada)
-            textView31.text = String.format("%s", p.precio)
-            textView32.text = String.format("%s", p.totalOc)
-            itemView.setOnClickListener { v -> listener.onItemClick(p, v, adapterPosition) }
-        }
+        fun bind(p: OrdenDetalle, listener: OnItemClickListener.OrdenDetalleListener) =
+            with(itemView) {
+                textView1.text = String.format("Precio : %s", p.precio)
+                textView2.text = p.proveedor
+                textView3.text = String.format("Fecha de compra%s", p.fecha)
+                textView4.text = p.razonSocial
+                itemView.setOnClickListener { v -> listener.onItemClick(p, v, adapterPosition) }
+            }
     }
 }

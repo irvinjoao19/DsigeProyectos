@@ -2,6 +2,7 @@ package com.dsige.dsigeproyectos.data.local.model
 
 import com.dsige.dsigeproyectos.data.local.model.engie.*
 import com.dsige.dsigeproyectos.data.local.model.trinidad.*
+import com.dsige.dsigeproyectos.data.local.model.logistica.*
 
 open class Sync {
     // trinidad
@@ -21,5 +22,10 @@ open class Sync {
     var medidores: List<Medidor> = ArrayList()
     var devoluciones: List<TipoDevolucion> = ArrayList()
     var personals: List<Personal> = ArrayList()
+    var delegaciones: List<Delegacion> = ArrayList()
+    var requerimientoMateriales : List<RequerimientoMaterial> = ArrayList()
 
+    var requerimientoEstado : List<RequerimientoEstado> = ArrayList()
+    var requerimientoTipo : List<RequerimientoTipo> = ArrayList()
+    var requerimientoCentroCostos : List<RequerimientoCentroCosto> = ArrayList()
 }

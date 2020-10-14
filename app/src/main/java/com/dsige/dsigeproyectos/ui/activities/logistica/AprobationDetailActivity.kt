@@ -2,9 +2,7 @@ package com.dsige.dsigeproyectos.ui.activities.logistica
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputType
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -19,10 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dsige.dsigeproyectos.R
-import com.dsige.dsigeproyectos.data.local.model.engie.Area
-import com.dsige.dsigeproyectos.data.local.model.engie.CentroCostos
-import com.dsige.dsigeproyectos.data.local.model.engie.Sucursal
 import com.dsige.dsigeproyectos.data.local.model.logistica.Orden
+import com.dsige.dsigeproyectos.data.local.model.logistica.OrdenDetalle
 import com.dsige.dsigeproyectos.data.local.model.logistica.Pedido
 import com.dsige.dsigeproyectos.data.viewModel.LogisticaViewModel
 import com.dsige.dsigeproyectos.data.viewModel.ViewModelFactory
@@ -31,6 +27,7 @@ import com.dsige.dsigeproyectos.ui.listeners.OnItemClickListener
 import com.google.android.material.button.MaterialButton
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_aprobation_detail.*
+import kotlinx.android.synthetic.main.activity_aprobation_detail.recyclerView
 import javax.inject.Inject
 
 class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
@@ -117,9 +114,9 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 })
 
                 val ordenAdapter =
-                    OrdenDetalleAdapter(object : OnItemClickListener.OrdenListener {
+                    OrdenGroupAdapter(object : OnItemClickListener.OrdenListener {
                         override fun onItemClick(o: Orden, v: View, position: Int) {
-
+                            dialogDetalle(o.articulo)
                         }
                     })
                 recyclerView.itemAnimator = DefaultItemAnimator()
@@ -134,7 +131,6 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
             }
         }
     }
-
 
     private fun messageDialog(tipo: Int, title: String) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
@@ -162,5 +158,40 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         buttonCancelar.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun dialogDetalle(articulo: String) {
+        val builder = android.app.AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v =
+            LayoutInflater.from(this).inflate(R.layout.dialog_historico, null)
+
+        val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
+        val textViewArticulo: TextView = v.findViewById(R.id.textViewArticulo)
+        val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
+        textViewTitulo.text = String.format("Historico de Precios")
+        textViewArticulo.text = articulo
+
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
+
+        val ordenDetalleAdapter =
+            OrdenDetalleAdapter(object : OnItemClickListener.OrdenDetalleListener {
+                override fun onItemClick(o: OrdenDetalle, v: View, position: Int) {
+                }
+            })
+
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.layoutManager = layoutManager
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
+        )
+        recyclerView.adapter = ordenDetalleAdapter
+        logisticaViewModel.getOrdenDetalleByCodigo(articulo)
+            .observe(this, Observer<List<OrdenDetalle>> {
+                ordenDetalleAdapter.addItems(it)
+            })
     }
 }

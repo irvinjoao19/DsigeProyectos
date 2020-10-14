@@ -55,7 +55,7 @@ class ParteDiarioGeneralFragment : DaggerFragment(), View.OnClickListener {
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var parteDiarioViewModel: ParteDiarioViewModel
     lateinit var usuarioViewModel: UsuarioViewModel
-    var viewPager: ViewPager? = null
+    private var viewPager: ViewPager? = null
     lateinit var p: ParteDiario
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,24 +178,8 @@ class ParteDiarioGeneralFragment : DaggerFragment(), View.OnClickListener {
                 })
 
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         obraAdapter.getFilter().filter(editTextSearch.text.toString())
 
@@ -219,24 +203,8 @@ class ParteDiarioGeneralFragment : DaggerFragment(), View.OnClickListener {
                     }
                 })
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         coordinadorAdapter.getFilter().filter(editTextSearch.text.toString())
                     }

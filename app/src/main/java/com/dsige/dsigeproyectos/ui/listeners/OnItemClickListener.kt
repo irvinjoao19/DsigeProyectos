@@ -128,10 +128,43 @@ interface OnItemClickListener {
         fun onItemClick(s: Solicitud, v: View, position: Int)
     }
 
-    interface  PedidoListener{
-        fun onItemClick(p : Pedido, v: View, position: Int)
+    interface PedidoListener {
+        fun onItemClick(p: Pedido, v: View, position: Int)
     }
-    interface  OrdenListener{
-        fun onItemClick(o : Orden, v: View, position: Int)
+
+    interface OrdenListener {
+        fun onItemClick(o: Orden, v: View, position: Int)
+    }
+
+    interface OrdenDetalleListener {
+        fun onItemClick(o: OrdenDetalle, v: View, position: Int)
+    }
+
+    interface RequerimientoListener {
+        fun onItemClick(r: Requerimiento, v: View, position: Int)
+    }
+
+    interface RequerimientoDetalleListener {
+        fun onItemClick(r: RequerimientoDetalle, v: View, position: Int)
+    }
+
+    interface DelegacionListener {
+        fun onItemClick(d: Delegacion, v: View, position: Int)
+    }
+
+    interface RequerimientoMaterialListener {
+        fun onItemClick(r: RequerimientoMaterial, v: View, position: Int)
+    }
+
+    interface RequerimientoCentroCostoListener {
+        fun onItemClick(c: RequerimientoCentroCosto, v: View, position: Int)
+    }
+
+    interface RequerimientoEstadoListener {
+        fun onItemClick(c: RequerimientoEstado, v: View, position: Int)
+    }
+
+    interface RequerimientoTipoListener {
+        fun onItemClick(c: RequerimientoTipo, v: View, position: Int)
     }
 }

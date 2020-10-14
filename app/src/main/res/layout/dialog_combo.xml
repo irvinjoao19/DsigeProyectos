@@ -16,6 +16,7 @@
         android:textSize="18sp" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutSearch"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

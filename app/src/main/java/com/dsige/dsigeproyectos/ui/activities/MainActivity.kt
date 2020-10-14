@@ -54,14 +54,14 @@ class MainActivity : DaggerAppCompatActivity() {
         val menuAdapter = MenuAdapter(object : OnItemClickListener.MenuListener {
             override fun onItemClick(m: MenuPrincipal, view: View, position: Int) {
                 when (m.id) {
-                    1,2,4 -> startActivity(
+                    1, 2, 4 -> startActivity(
                         Intent(this@MainActivity, SubMainActivity::class.java)
                             .putExtra("tipo", m.id)
                             .putExtra("title", m.title)
                             .putExtra("usuarioId", u.usuarioId)
                             .putExtra("estado", u.estado)
                     )
-                    6-> dialogLogout()
+                    6 -> dialogLogout()
                 }
             }
         })
@@ -73,17 +73,17 @@ class MainActivity : DaggerAppCompatActivity() {
         recyclerView.adapter = menuAdapter
 
         val menus: ArrayList<MenuPrincipal> = ArrayList()
-        menus.add(MenuPrincipal(1, "Solicitud de Materiales", R.drawable.ic_sync))
-        menus.add(MenuPrincipal(2, "Logistica", R.drawable.ic_sync))
-        menus.add(MenuPrincipal(3, "Vehiculos", R.drawable.ic_sync))
-        menus.add(MenuPrincipal(4, "Gestion de Proyectos", R.drawable.ic_sync))
-        menus.add(MenuPrincipal(5, "Prevención de Seguridad", R.drawable.ic_sync))
-        menus.add(MenuPrincipal(6, "Salir", R.drawable.ic_exit))
+        menus.add(MenuPrincipal(1, "Solicitud de Materiales", R.drawable.ic_storage))
+        menus.add(MenuPrincipal(2, "Logistica", R.drawable.ic_cubos))
+        menus.add(MenuPrincipal(3, "Vehiculos", R.drawable.ic_coche))
+        menus.add(MenuPrincipal(4, "Gestion de Proyectos", R.drawable.ic_ruedas))
+        menus.add(MenuPrincipal(5, "Prevención de Seguridad", R.drawable.ic_seguridad))
+        menus.add(MenuPrincipal(6, "Salir", R.drawable.ic_logout))
         menuAdapter.addItems(menus)
 
         usuarioViewModel.success.observe(this, Observer { s ->
             if (s != null) {
-               closeLoad()
+                closeLoad()
                 if (s == "Close") {
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -95,7 +95,7 @@ class MainActivity : DaggerAppCompatActivity() {
         })
         usuarioViewModel.error.observe(this@MainActivity, Observer { s ->
             if (s != null) {
-             closeLoad()
+                closeLoad()
                 Util.snackBarMensaje(window.decorView, s)
             }
         })

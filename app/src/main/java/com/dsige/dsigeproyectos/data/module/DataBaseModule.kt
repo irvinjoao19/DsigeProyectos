@@ -188,4 +188,39 @@ class DataBaseModule {
     internal fun provideOrdenDetalleDao(appDataBase: AppDataBase): OrdenDetalleDao {
         return appDataBase.ordenDetalleDao()
     }
+
+    @Provides
+    internal fun provideRequerimientoDao(appDataBase: AppDataBase): RequerimientoDao {
+        return appDataBase.requerimientoDao()
+    }
+
+    @Provides
+    internal fun provideRequerimientoDetalleDao(appDataBase: AppDataBase): RequerimientoDetalleDao {
+        return appDataBase.requerimientoDetalleDao()
+    }
+
+    @Provides
+    internal fun provideDelegacionDao(appDataBase: AppDataBase): DelegacionDao {
+        return appDataBase.delegacionDao()
+    }
+
+    @Provides
+    internal fun provideRequerimientoMaterialDao(appDataBase: AppDataBase): RequerimientoMaterialDao {
+        return appDataBase.requerimientoMaterialDao()
+    }
+
+    @Provides
+    internal fun provideRequerimientoEstadoDao(appDataBase: AppDataBase): RequerimientoEstadoDao {
+        return appDataBase.requerimientoEstadoDao()
+    }
+
+    @Provides
+    internal fun provideRequerimientoTipoDao(appDataBase: AppDataBase): RequerimientoTipoDao {
+        return appDataBase.requerimientoTipoDao()
+    }
+
+    @Provides
+    internal fun provideRequerimientoCentroCostoDao(appDataBase: AppDataBase): RequerimientoCentroCostoDao {
+        return appDataBase.requerimientoCentroCostoDao()
+    }
 }

@@ -182,6 +182,29 @@ interface AppRepository {
     fun getOrdenGroup(): LiveData<List<Orden>>
     fun getOrdenGroupOne(codigo: String): LiveData<Orden>
     fun getOrdenByCodigo(codigo: String): LiveData<List<Orden>>
+    fun getOrdenDetalleByCodigo(articulo: String): LiveData<List<OrdenDetalle>>
+
+
+    fun insertRequerimiento(r: Requerimiento): Completable
+    fun getRequerimientos(): LiveData<List<Requerimiento>>
+    fun getRequerimientoById(id: Int): LiveData<Requerimiento>
+    fun insertRequerimientoDetalle(r: RequerimientoDetalle): Completable
+    fun getRequerimientoDetalleById(id: Int): LiveData<RequerimientoDetalle>
+    fun getRequerimientoDetalles(id: Int): LiveData<List<RequerimientoDetalle>>
+    fun getRequerimientoId(): LiveData<Int>
+    fun getDelegacion(): LiveData<List<Delegacion>>
+    fun deleteRequerimiento(r: Requerimiento): Completable
+
+    fun getRequerimientoTask(): Observable<List<Requerimiento>>
+    fun sendRequerimiento(body: RequestBody): Observable<Mensaje>
+    fun updateEnabledRequerimiento(t: Mensaje): Completable
+
+    fun getRequerimientoMaterial(codigo: String): LiveData<RequerimientoMaterial>
+    fun deleteRequerimientoDetalle(d: RequerimientoDetalle): Completable
+    fun getRequerimientoMateriales(): LiveData<List<RequerimientoMaterial>>
+    fun getRequerimientoCentroCostos(): LiveData<List<RequerimientoCentroCosto>>
+    fun getRequerimientoEstado(): LiveData<List<RequerimientoEstado>>
+    fun getTipos(): LiveData<List<RequerimientoTipo>>
 
 
 }

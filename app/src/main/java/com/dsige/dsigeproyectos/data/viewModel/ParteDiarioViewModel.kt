@@ -491,7 +491,6 @@ internal constructor(private val roomRepository: AppRepository, private val retr
                     }
                 }
             })
-
     }
 
     private fun updateParteDiario(t: Mensaje) {

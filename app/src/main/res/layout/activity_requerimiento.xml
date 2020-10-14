@@ -37,21 +37,25 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextFecha"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_date"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:hint="dd/MM/yyyy" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextEstado"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_down"
                     android:focusable="false"
-                    android:hint="Estado" />
+                    android:hint="Seleccione Estado" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextSearch"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_search"
@@ -65,4 +69,17 @@
                 android:scrollbars="vertical" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabGenerate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="16dp"
+        android:text="Nueva Solicitud"
+        android:textColor="@color/colorWhite"
+        app:backgroundTint="@color/colorAccent"
+        app:icon="@drawable/ic_add"
+        app:iconGravity="end"
+        app:iconTint="@color/colorWhite" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

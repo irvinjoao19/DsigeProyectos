@@ -11,9 +11,7 @@ import com.dsige.dsigeproyectos.helper.Util
 import com.dsige.dsigeproyectos.data.local.AppDataBase
 import com.dsige.dsigeproyectos.data.local.model.*
 import com.dsige.dsigeproyectos.data.local.model.engie.*
-import com.dsige.dsigeproyectos.data.local.model.logistica.Orden
-import com.dsige.dsigeproyectos.data.local.model.logistica.OrdenDetalle
-import com.dsige.dsigeproyectos.data.local.model.logistica.Pedido
+import com.dsige.dsigeproyectos.data.local.model.logistica.*
 import com.dsige.dsigeproyectos.data.local.model.trinidad.ParametroT
 import com.dsige.dsigeproyectos.data.local.model.trinidad.*
 import com.google.gson.Gson
@@ -215,10 +213,29 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
             if (personal != null) {
                 dataBase.personalDao().insertPersonalListTask(personal)
             }
-
             val de: List<TipoDevolucion>? = s.devoluciones
             if (de != null) {
                 dataBase.tipoDevolucionDao().insertTipoDevolucionListTask(de)
+            }
+            val d: List<Delegacion>? = s.delegaciones
+            if (d != null) {
+                dataBase.delegacionDao().insertDelegacionListTask(d)
+            }
+            val re: List<RequerimientoMaterial>? = s.requerimientoMateriales
+            if (re != null) {
+                dataBase.requerimientoMaterialDao().insertRequerimientoMaterialListTask(re)
+            }
+            val rE: List<RequerimientoEstado>? = s.requerimientoEstado
+            if (rE != null) {
+                dataBase.requerimientoEstadoDao().insertRequerimientoEstadoListTask(rE)
+            }
+            val rt: List<RequerimientoTipo>? = s.requerimientoTipo
+            if (rt != null) {
+                dataBase.requerimientoTipoDao().insertRequerimientoTipoListTask(rt)
+            }
+            val rc: List<RequerimientoCentroCosto>? = s.requerimientoCentroCostos
+            if (rc != null) {
+                dataBase.requerimientoCentroCostoDao().insertRequerimientoCentroCostoListTask(rc)
             }
         }
     }
@@ -1100,5 +1117,117 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
 
     override fun getOrdenByCodigo(codigo: String): LiveData<List<Orden>> {
         return dataBase.ordenDao().getOrdenByCodigo(codigo)
+    }
+
+    override fun getOrdenDetalleByCodigo(articulo: String): LiveData<List<OrdenDetalle>> {
+        return dataBase.ordenDetalleDao().getOrdenDetalleByCodigo(articulo)
+    }
+
+    override fun insertRequerimiento(r: Requerimiento): Completable {
+        return Completable.fromAction {
+            val a: Requerimiento? =
+                dataBase.requerimientoDao().getRequerimientoTask(r.requerimientoId)
+            if (a == null) {
+                dataBase.requerimientoDao().insertRequerimientoTask(r)
+            } else
+                dataBase.requerimientoDao().updateRequerimientoTask(r)
+
+        }
+    }
+
+    override fun getRequerimientos(): LiveData<List<Requerimiento>> {
+        return dataBase.requerimientoDao().getRequerimientos()
+    }
+
+    override fun getRequerimientoById(id: Int): LiveData<Requerimiento> {
+        return dataBase.requerimientoDao().getRequerimientoById(id)
+    }
+
+    override fun insertRequerimientoDetalle(r: RequerimientoDetalle): Completable {
+        return Completable.fromAction {
+            if (r.detalleId == 0)
+                dataBase.requerimientoDetalleDao().insertRequerimientoDetalleTask(r)
+            else
+                dataBase.requerimientoDetalleDao().updateRequerimientoDetalleTask(r)
+        }
+    }
+
+    override fun getRequerimientoDetalleById(id: Int): LiveData<RequerimientoDetalle> {
+        return dataBase.requerimientoDetalleDao().getRequerimientoDetalleById(id)
+    }
+
+    override fun getRequerimientoDetalles(id: Int): LiveData<List<RequerimientoDetalle>> {
+        return dataBase.requerimientoDetalleDao().getRequerimientoDetalles(id)
+    }
+
+    override fun getRequerimientoId(): LiveData<Int> {
+        return dataBase.requerimientoDao().getMaxIdRequerimiento()
+    }
+
+    override fun getDelegacion(): LiveData<List<Delegacion>> {
+        return dataBase.delegacionDao().getDelegacions()
+    }
+
+    override fun deleteRequerimiento(r: Requerimiento): Completable {
+        return Completable.fromAction {
+            dataBase.requerimientoDao().deleteRequerimientoTask(r)
+        }
+    }
+
+    override fun getRequerimientoTask(): Observable<List<Requerimiento>> {
+        return Observable.create { e ->
+            val a: ArrayList<Requerimiento> = ArrayList()
+            val data: List<Requerimiento> = dataBase.requerimientoDao().getRequerimientosTask()
+            if (data.isEmpty()) {
+                e.onError(Throwable("No hay datos por enviar"))
+                e.onComplete()
+                return@create
+            }
+            for (r: Requerimiento in data) {
+                val detalle = dataBase.requerimientoDetalleDao()
+                    .getRequerimientoDetalleTask(r.requerimientoId)
+                r.detalle = detalle
+                a.add(r)
+            }
+            e.onNext(a)
+            e.onComplete()
+        }
+    }
+
+    override fun sendRequerimiento(body: RequestBody): Observable<Mensaje> {
+        return apiService.saveRequerimiento(body)
+    }
+
+    override fun updateEnabledRequerimiento(t: Mensaje): Completable {
+        return Completable.fromAction {
+
+
+        }
+    }
+
+    override fun getRequerimientoMaterial(codigo: String): LiveData<RequerimientoMaterial> {
+        return dataBase.requerimientoMaterialDao().getRequerimientoMaterial(codigo)
+    }
+
+    override fun deleteRequerimientoDetalle(d: RequerimientoDetalle): Completable {
+        return Completable.fromAction {
+            dataBase.requerimientoDetalleDao().deleteRequerimientoDetalleTask(d)
+        }
+    }
+
+    override fun getRequerimientoMateriales(): LiveData<List<RequerimientoMaterial>> {
+        return dataBase.requerimientoMaterialDao().getRequerimientoMateriales()
+    }
+
+    override fun getRequerimientoCentroCostos(): LiveData<List<RequerimientoCentroCosto>> {
+        return dataBase.requerimientoCentroCostoDao().getRequerimientoCentroCostos()
+    }
+
+    override fun getRequerimientoEstado(): LiveData<List<RequerimientoEstado>> {
+        return dataBase.requerimientoEstadoDao().getRequerimientoEstados()
+    }
+
+    override fun getTipos(): LiveData<List<RequerimientoTipo>> {
+        return dataBase.requerimientoTipoDao().getRequerimientoTipos()
     }
 }

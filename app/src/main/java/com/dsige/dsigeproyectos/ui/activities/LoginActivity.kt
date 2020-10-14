@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dsige.dsigeproyectos.R
 import com.dsige.dsigeproyectos.data.viewModel.UsuarioViewModel
@@ -93,16 +92,13 @@ class LoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
         textViewVersion.text = String.format("V %s", Util.getVersion(this))
         buttonEnviar.setOnClickListener(this)
 
-        usuarioViewModel.error.observe(this, Observer {
-            if (dialog != null) {
-                if (dialog!!.isShowing) {
-                    dialog!!.dismiss()
-                }
-            }
+        usuarioViewModel.error.observe(this, {
+            closeLoad()
             Util.toastMensaje(this, it)
         })
 
-        usuarioViewModel.success.observe(this, Observer {
+        usuarioViewModel.success.observe(this, {
+            closeLoad()
             goMainActivity()
         })
     }
@@ -118,6 +114,14 @@ class LoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
         dialog!!.setCanceledOnTouchOutside(false)
         dialog!!.setCancelable(false)
         dialog!!.show()
+    }
+
+    private fun closeLoad() {
+        if (dialog != null) {
+            if (dialog!!.isShowing) {
+                dialog!!.dismiss()
+            }
+        }
     }
 
     private fun goMainActivity() {

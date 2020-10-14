@@ -11,7 +11,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -108,7 +107,7 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
         viewPager = activity!!.findViewById(R.id.viewPager)
         editTextNumero.setText(solicitudId.toString())
         editTextFecha.setText(Util.getFecha())
-        usuarioViewModel.user.observe(viewLifecycleOwner, Observer { u ->
+        usuarioViewModel.user.observe(viewLifecycleOwner, { u ->
             s.usuario = u.usuarioId
             s.centroCosto = u.centroId
             s.cuadrillaCodigo = u.cuadrillaId
@@ -116,7 +115,7 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
             s.sucursalId = u.sucursalId
         })
 
-        solicitudViewModel.getSolicitudById(solicitudId).observe(viewLifecycleOwner, Observer { g ->
+        solicitudViewModel.getSolicitudById(solicitudId).observe(viewLifecycleOwner, { g ->
             if (g != null) {
                 s.solicitudId = g.solicitudId
                 s.identity = g.identity
@@ -202,25 +201,15 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
                     }
                 })
                 recyclerView.adapter = obraAdapter
-                solicitudViewModel.getObras().observe(this, Observer { o ->
+                solicitudViewModel.getObras().observe(this, { o ->
                     if (o != null) {
                         obraAdapter.addItems(o)
                     }
                 })
 
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         obraAdapter.getFilter().filter(editTextSearch.text.toString())
                     }
@@ -239,31 +228,15 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
                         }
                     })
                 recyclerView.adapter = personalAdapter
-                solicitudViewModel.getPersonal().observe(this, Observer<List<Personal>> { p ->
+                solicitudViewModel.getPersonal().observe(this, { p ->
                     if (p != null) {
                         personalAdapter.addItems(p)
                     }
                 })
 
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         personalAdapter.getFilter().filter(editTextSearch.text.toString())
                     }
@@ -281,31 +254,15 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
                     })
                 recyclerView.adapter = tipoDevolucionAdapter
                 solicitudViewModel.getTipoDevolucion()
-                    .observe(this, Observer<List<TipoDevolucion>> { t ->
+                    .observe(this, { t ->
                         if (t != null) {
                             tipoDevolucionAdapter.addItems(t)
                         }
                     })
 
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence,
-                        i: Int,
-                        i1: Int,
-                        i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         tipoDevolucionAdapter.getFilter().filter(editTextSearch.text.toString())
                     }
@@ -323,20 +280,12 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
                         }
                     })
                 recyclerView.adapter = coordinadorAdapter
-                solicitudViewModel.getCoordinador().observe(this, Observer {
+                solicitudViewModel.getCoordinador().observe(this, {
                     coordinadorAdapter.addItems(it)
                 })
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         coordinadorAdapter.getFilter().filter(editTextSearch.text.toString())
                     }
@@ -378,7 +327,7 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
     }
 
     private fun menssage() {
-        solicitudViewModel.error.observe(viewLifecycleOwner, Observer { m ->
+        solicitudViewModel.error.observe(viewLifecycleOwner, { m ->
             if (dialog != null) {
                 if (dialog!!.isShowing) {
                     dialog!!.dismiss()
@@ -390,7 +339,7 @@ class SolicitudGeneralFragment : DaggerFragment(), View.OnClickListener {
     }
 
     private fun success() {
-        solicitudViewModel.success.observe(viewLifecycleOwner, Observer { m ->
+        solicitudViewModel.success.observe(viewLifecycleOwner, { m ->
             if (dialog != null) {
                 if (dialog!!.isShowing) {
                     dialog!!.dismiss()

@@ -2,6 +2,7 @@ package com.dsige.dsigeproyectos.data.module
 
 import com.dsige.dsigeproyectos.ui.fragments.*
 import com.dsige.dsigeproyectos.ui.fragments.engie.*
+import com.dsige.dsigeproyectos.ui.fragments.logistica.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -51,5 +52,18 @@ abstract class FragmentBindingModule {
 
         @ContributesAndroidInjector
         internal abstract fun providSolicitudPhotoFragment(): SolicitudPhotoFragment
+    }
+
+    // LOGISTICA
+
+    @Module
+    abstract class Requerimiento {
+
+        @ContributesAndroidInjector
+        internal abstract fun providGeneralFragment(): GeneralFragment
+
+        @ContributesAndroidInjector
+        internal abstract fun providMaterialFragment(): MaterialFragment
+
     }
 }

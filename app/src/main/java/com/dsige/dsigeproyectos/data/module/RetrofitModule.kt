@@ -64,6 +64,6 @@ class RetrofitModule {
     }
 
     companion object {
-        private val BASE_URL = "http://173.248.174.85/webApiDsigeProyectos/api/Proyectos/"
+        private val BASE_URL = "http://190.12.90.249/webApiOca/api/Proyectos/"
     }
 }
