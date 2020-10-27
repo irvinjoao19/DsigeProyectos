@@ -91,6 +91,21 @@ object Util {
         return day
     }
 
+    @SuppressLint("SimpleDateFormat")
+    fun getFirstDay(): String {
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val calendar = Calendar.getInstance()
+        calendar[Calendar.DAY_OF_MONTH] = 1
+        return sdf.format(calendar.time)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getLastDay(): String {
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        return sdf.format(calendar.time)
+    }
 
     fun getFormatDate(date: Date): String {
         @SuppressLint("SimpleDateFormat") val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss a")

@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 open class Pedido {
     @PrimaryKey
+    var id: Int = 0
     var pedidoId: Int = 0    // int pedidoId
     var tipoPedidoId: String = ""   // string
     var nombreTipoPedido: String = ""   // string
@@ -25,4 +26,5 @@ open class Pedido {
     var cantidad: Double = 0.0
     var cantidadAprobada: Double = 0.0
     var precio: Double = 0.0
+    var estadoId: Int = 1
 }

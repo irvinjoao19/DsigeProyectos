@@ -174,15 +174,34 @@ interface AppRepository {
     fun getSyncPedido(u: String): Observable<List<Pedido>>
     fun insertPedido(t: List<Pedido>): Completable
     fun getPedidoGroup(): LiveData<List<Pedido>>
+    fun getPedidoGroup(e:String): LiveData<List<Pedido>>
     fun getPedidoGroupOne(codigo: String): LiveData<Pedido>
     fun getPedidoByCodigo(codigo: String): LiveData<List<Pedido>>
+    fun sendUpdateCantidadPedido(body: RequestBody): Observable<Mensaje>
+    fun updateCantidadPedido(id: Int, cantidad: Double): Completable
 
+    //orden
     fun getSyncOrden(u: String): Observable<List<Orden>>
     fun insertOrden(t: List<Orden>): Completable
     fun getOrdenGroup(): LiveData<List<Orden>>
+    fun getOrdenGroup(e: String): LiveData<List<Orden>>
     fun getOrdenGroupOne(codigo: String): LiveData<Orden>
     fun getOrdenByCodigo(codigo: String): LiveData<List<Orden>>
     fun getOrdenDetalleByCodigo(articulo: String): LiveData<List<OrdenDetalle>>
+
+    //anulacion
+    fun getSyncAnulacion(u: String, fi: String, ff: String): Observable<List<Anulacion>>
+    fun insertAnulacion(t: List<Anulacion>): Completable
+    fun getAnulacionGroup(): LiveData<List<Anulacion>>
+    fun getAnulacionGroupOne(codigo: String): LiveData<Anulacion>
+    fun getAnulacionByCodigo(codigo: String): LiveData<List<Anulacion>>
+    fun sendAnulacion(body: RequestBody): Observable<Mensaje>
+    fun updateAnulacion(tipo: Int, id: Int): Completable
+
+    //ambos pedido y orden
+    fun sendUpdateAprobacionOrRechazo(body: RequestBody): Observable<Mensaje>
+    fun updateAprobacionOrRechazo(tipo: Int, id: Int): Completable
+    fun getCombosEstados(): LiveData<List<ComboEstado>>
 
 
     fun insertRequerimiento(r: Requerimiento): Completable
@@ -205,6 +224,5 @@ interface AppRepository {
     fun getRequerimientoCentroCostos(): LiveData<List<RequerimientoCentroCosto>>
     fun getRequerimientoEstado(): LiveData<List<RequerimientoEstado>>
     fun getTipos(): LiveData<List<RequerimientoTipo>>
-
 
 }

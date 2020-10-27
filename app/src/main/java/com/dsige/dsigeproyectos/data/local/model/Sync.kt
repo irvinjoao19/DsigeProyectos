@@ -26,6 +26,7 @@ open class Sync {
     var requerimientoMateriales : List<RequerimientoMaterial> = ArrayList()
 
     var requerimientoEstado : List<RequerimientoEstado> = ArrayList()
+    var comboEstados : List<ComboEstado> = ArrayList()
     var requerimientoTipo : List<RequerimientoTipo> = ArrayList()
     var requerimientoCentroCostos : List<RequerimientoCentroCosto> = ArrayList()
 }

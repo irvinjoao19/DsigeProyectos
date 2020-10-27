@@ -223,4 +223,14 @@ class DataBaseModule {
     internal fun provideRequerimientoCentroCostoDao(appDataBase: AppDataBase): RequerimientoCentroCostoDao {
         return appDataBase.requerimientoCentroCostoDao()
     }
+
+    @Provides
+    internal fun provideComboEstadoDao(appDataBase: AppDataBase): ComboEstadoDao {
+        return appDataBase.comboEstadoDao()
+    }
+
+    @Provides
+    internal fun provideAnulacionDao(appDataBase: AppDataBase): AnulacionDao {
+        return appDataBase.anulacionDao()
+    }
 }

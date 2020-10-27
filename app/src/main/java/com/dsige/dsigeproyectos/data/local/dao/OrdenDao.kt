@@ -31,12 +31,18 @@ interface OrdenDao {
     @Query("DELETE FROM Orden")
     fun deleteAll()
 
-    @Query("SELECT * FROM Orden GROUP BY nroOrden")
+    @Query("SELECT * FROM Orden WHERE estadoId = 1 GROUP BY nroOrden")
     fun getOrdenGroup(): LiveData<List<Orden>>
+
+    @Query("SELECT * FROM Orden WHERE estadoId = 1 AND delegacion=:e GROUP BY nroOrden")
+    fun getOrdenGroup(e:String): LiveData<List<Orden>>
 
     @Query("SELECT * FROM Orden WHERE nroOrden =:c GROUP BY nroOrden")
     fun getOrdenGroupOne(c:String): LiveData<Orden>
 
     @Query("SELECT * FROM Orden WHERE nroOrden =:c ")
     fun getOrdenByCodigo(c: String): LiveData<List<Orden>>
+
+    @Query("UPDATE Orden SET estadoId = 0 WHERE id=:i")
+    fun updateAprobacion(i: Int)
 }

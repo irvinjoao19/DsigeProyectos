@@ -1,6 +1,7 @@
 package com.dsige.dsigeproyectos.data.local.repository
 
 import android.content.Context
+import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Config
@@ -236,6 +237,10 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
             val rc: List<RequerimientoCentroCosto>? = s.requerimientoCentroCostos
             if (rc != null) {
                 dataBase.requerimientoCentroCostoDao().insertRequerimientoCentroCostoListTask(rc)
+            }
+            val c1: List<ComboEstado>? = s.comboEstados
+            if (c1 != null) {
+                dataBase.comboEstadoDao().insertComboEstadoListTask(c1)
             }
         }
     }
@@ -1077,6 +1082,10 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return dataBase.pedidoDao().getPedidoGroup()
     }
 
+    override fun getPedidoGroup(e: String): LiveData<List<Pedido>> {
+        return dataBase.pedidoDao().getPedidoGroup(e)
+    }
+
     override fun getPedidoGroupOne(codigo: String): LiveData<Pedido> {
         return dataBase.pedidoDao().getPedidoGroupOne(codigo)
     }
@@ -1085,30 +1094,43 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return dataBase.pedidoDao().getPedidoByCodigo(codigo)
     }
 
+    override fun sendUpdateCantidadPedido(body: RequestBody): Observable<Mensaje> {
+        return apiService.updateCantidad(body)
+    }
+
+    override fun updateCantidadPedido(id: Int, cantidad: Double): Completable {
+        return Completable.fromAction {
+            dataBase.pedidoDao().updateCantidad(id, cantidad)
+        }
+    }
+
     override fun getSyncOrden(u: String): Observable<List<Orden>> {
         return apiService.getOrdenCompra(u)
     }
 
     override fun insertOrden(t: List<Orden>): Completable {
         return Completable.fromAction {
+            dataBase.ordenDetalleDao().deleteAll()
+
             dataBase.ordenDao().insertOrdenListTask(t)
             for (o: Orden in t) {
-                val detalle: List<OrdenDetalle>? = o.detalle
+                val detalle: List<OrdenDetalle>? = o.detalles
                 if (detalle != null) {
                     for (d: OrdenDetalle in detalle) {
-                        d.id = when {
-                            dataBase.ordenDetalleDao().getIdentity() == 0 -> 1
-                            else -> dataBase.ordenDetalleDao().getIdentity() + 1
-                        }
                         dataBase.ordenDetalleDao().insertOrdenDetalleTask(d)
                     }
                 }
             }
+
         }
     }
 
     override fun getOrdenGroup(): LiveData<List<Orden>> {
         return dataBase.ordenDao().getOrdenGroup()
+    }
+
+    override fun getOrdenGroup(e: String): LiveData<List<Orden>> {
+        return dataBase.ordenDao().getOrdenGroup(e)
     }
 
     override fun getOrdenGroupOne(codigo: String): LiveData<Orden> {
@@ -1121,6 +1143,57 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
 
     override fun getOrdenDetalleByCodigo(articulo: String): LiveData<List<OrdenDetalle>> {
         return dataBase.ordenDetalleDao().getOrdenDetalleByCodigo(articulo)
+    }
+
+    override fun getSyncAnulacion(u: String, fi: String, ff: String): Observable<List<Anulacion>> {
+        return apiService.getAnulacion(u, fi, ff)
+    }
+
+    override fun insertAnulacion(t: List<Anulacion>): Completable {
+        return Completable.fromAction {
+            dataBase.anulacionDao().deleteAll()
+            dataBase.anulacionDao().insertAnulacionListTask(t)
+        }
+    }
+
+    override fun getAnulacionGroup(): LiveData<List<Anulacion>> {
+        return dataBase.anulacionDao().getAnulacionGroup()
+    }
+
+    override fun getAnulacionGroupOne(codigo: String): LiveData<Anulacion> {
+        return dataBase.anulacionDao().getAnulacionGroupOne(codigo)
+    }
+
+    override fun getAnulacionByCodigo(codigo: String): LiveData<List<Anulacion>> {
+        return dataBase.anulacionDao().getAnulacionByCodigo(codigo)
+    }
+
+    override fun sendAnulacion(body: RequestBody): Observable<Mensaje> {
+        return apiService.sendAnulacion(body)
+    }
+
+    override fun updateAnulacion(tipo: Int, id: Int): Completable {
+        return Completable.fromAction {
+            dataBase.anulacionDao().updateAnulacion(id)
+        }
+    }
+
+    override fun sendUpdateAprobacionOrRechazo(body: RequestBody): Observable<Mensaje> {
+        return apiService.aprobacionOrdenCompra(body)
+    }
+
+    override fun updateAprobacionOrRechazo(tipo: Int, id: Int): Completable {
+        return Completable.fromAction {
+            if (tipo == 1) {
+                dataBase.pedidoDao().updateAprobacion(id)
+            } else {
+                dataBase.ordenDao().updateAprobacion(id)
+            }
+        }
+    }
+
+    override fun getCombosEstados(): LiveData<List<ComboEstado>> {
+        return dataBase.comboEstadoDao().getComboEstados()
     }
 
     override fun insertRequerimiento(r: Requerimiento): Completable {

@@ -31,12 +31,21 @@ interface PedidoDao {
     @Query("DELETE FROM Pedido")
     fun deleteAll()
 
-    @Query("SELECT * FROM Pedido GROUP BY nroPedido")
+    @Query("SELECT * FROM Pedido WHERE estadoId = 1 GROUP BY nroPedido")
     fun getPedidoGroup(): LiveData<List<Pedido>>
 
+    @Query("SELECT * FROM Pedido WHERE estadoId = 1 AND delegacion=:e GROUP BY nroPedido")
+    fun getPedidoGroup(e: String): LiveData<List<Pedido>>
+
     @Query("SELECT * FROM Pedido WHERE nroPedido =:c GROUP BY nroPedido")
-    fun getPedidoGroupOne(c:String): LiveData<Pedido>
+    fun getPedidoGroupOne(c: String): LiveData<Pedido>
 
     @Query("SELECT * FROM Pedido WHERE nroPedido =:c ")
     fun getPedidoByCodigo(c: String): LiveData<List<Pedido>>
+
+    @Query("UPDATE Pedido SET cantidadAprobada =:c WHERE id=:i")
+    fun updateCantidad(i: Int, c: Double)
+
+    @Query("UPDATE Pedido SET estadoId = 0 WHERE id=:i")
+    fun updateAprobacion(i: Int)
 }

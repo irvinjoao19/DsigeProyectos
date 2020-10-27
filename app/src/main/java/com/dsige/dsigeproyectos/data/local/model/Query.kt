@@ -34,6 +34,12 @@ open class Query {
     var imei: String = ""
     var version: String = ""
 
+    var matricula: String = ""
+    var cantidad: Double = 0.0
+    var detalleId: Int = 0
+
+
+
     constructor()
 
     constructor(user: String, pass: String) {
@@ -47,4 +53,25 @@ open class Query {
         this.imei = imei
         this.version = version
     }
+
+    constructor(usuarioId: String,detalleId: Int, matricula: String, cantidad: Double) {
+        this.usuarioId = usuarioId
+        this.detalleId = detalleId
+        this.matricula = matricula
+        this.cantidad = cantidad
+    }
+
+    constructor(detalleId: Int,usuarioId: String, tipoProceso: String, search: String,matricula: String) {
+        this.usuarioId = usuarioId
+        this.tipoProceso = tipoProceso
+        this.search = search
+        this.detalleId = detalleId
+        this.matricula = matricula
+    }
+
+
+//    cmd.Parameters.Add("@TipoProceso", SqlDbType.VarChar).Value = s.tipoProceso;
+//    cmd.Parameters.Add("@Usuario", SqlDbType.Int).Value = s.usuarioId;
+//    cmd.Parameters.Add("@Log_OCom_Identidad", SqlDbType.VarChar).Value = s.detalleId;
+//    cmd.Parameters.Add("@OBS_Rechazo", SqlDbType.Decimal).Value = s.search;
 }

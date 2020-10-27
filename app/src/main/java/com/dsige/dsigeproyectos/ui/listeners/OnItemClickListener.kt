@@ -167,4 +167,12 @@ interface OnItemClickListener {
     interface RequerimientoTipoListener {
         fun onItemClick(c: RequerimientoTipo, v: View, position: Int)
     }
+
+    interface ComboEstadoListener {
+        fun onItemClick(c: ComboEstado, v: View, position: Int)
+    }
+
+    interface  AnulacionListener{
+        fun onItemClick(a: Anulacion, v: View, position: Int)
+    }
 }

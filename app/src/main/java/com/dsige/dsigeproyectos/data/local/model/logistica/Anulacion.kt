@@ -5,7 +5,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity
-open class Orden {
+open class Anulacion {
 
     @PrimaryKey
     var id: Int = 0

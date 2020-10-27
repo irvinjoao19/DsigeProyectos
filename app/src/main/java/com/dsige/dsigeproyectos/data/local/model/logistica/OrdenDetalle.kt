@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 @Entity
 open class OrdenDetalle {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    var detalleId : Int = 0
     var id: Int = 0
     var materialId: String = ""
     var fecha: String = ""

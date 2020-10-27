@@ -170,18 +170,12 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<Sync> {
-                override fun onComplete() {
-
-                }
-
-                override fun onSubscribe(d: Disposable) {
-
-                }
+                override fun onComplete() {}
+                override fun onSubscribe(d: Disposable) {}
 
                 override fun onNext(t: Sync) {
                     saveSync(t)
                 }
-
                 override fun onError(e: Throwable) {
                     mensajeError.value = e.message
                 }

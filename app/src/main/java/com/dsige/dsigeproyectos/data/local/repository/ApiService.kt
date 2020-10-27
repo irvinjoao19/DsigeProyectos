@@ -92,11 +92,6 @@ interface ApiService {
     @POST("SaveRegistroPhoto")
     fun saveRegistroPhoto(@Body query: RequestBody): Observable<Mensaje>
 
-    @Headers("Cache-Control: no-cache")
-    @POST("SaveRequerimiento")
-    fun saveRequerimiento(@Body query: RequestBody): Observable<Mensaje>
-
-
     // TODO ENGIE
 
     @Headers("Cache-Control: no-cache")
@@ -117,12 +112,34 @@ interface ApiService {
 
     // Logistica
     @Headers("Cache-Control: no-cache")
-    @POST("PedidosCompra")
+    @GET("PedidosCompra")
     fun getPedidosCompra(@Query("usuario") u: String): Observable<List<Pedido>>
 
     @Headers("Cache-Control: no-cache")
-    @POST("OrdenCompra")
+    @GET("OrdenCompra")
     fun getOrdenCompra(@Query("usuario") u: String): Observable<List<Orden>>
 
+    @Headers("Cache-Control: no-cache")
+    @GET("GetAnulacion")
+    fun getAnulacion(
+        @Query("usuario") u: String,
+        @Query("fi") fi: String,
+        @Query("ff") ff: String
+    ): Observable<List<Anulacion>>
 
+    @Headers("Cache-Control: no-cache")
+    @POST("SaveRequerimiento")
+    fun saveRequerimiento(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("UpdateCantidad")
+    fun updateCantidad(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("AprobacionOrdenCompra")
+    fun aprobacionOrdenCompra(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("AnularEvento")
+    fun sendAnulacion(@Body query: RequestBody): Observable<Mensaje>
 }
