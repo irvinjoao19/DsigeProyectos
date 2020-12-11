@@ -26,7 +26,7 @@ interface ComboEstadoDao {
     fun getComboEstadoTask(): List<ComboEstado>
 
     @Query("SELECT * FROM ComboEstado")
-    fun getComboEstado(): ComboEstado
+    fun getComboEstado(): LiveData<ComboEstado>
 
     @Query("DELETE FROM ComboEstado")
     fun deleteAll()

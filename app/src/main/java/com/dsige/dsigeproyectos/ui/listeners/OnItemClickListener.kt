@@ -172,7 +172,27 @@ interface OnItemClickListener {
         fun onItemClick(c: ComboEstado, v: View, position: Int)
     }
 
-    interface  AnulacionListener{
+    interface AnulacionListener {
         fun onItemClick(a: Anulacion, v: View, position: Int)
+    }
+
+    interface CampoJefeListener {
+        fun onItemClick(c: CampoJefe, v: View, position: Int)
+    }
+
+    interface TiempoVidaListener {
+        fun onItemClick(t: TiempoVida, v: View, position: Int)
+    }
+
+    interface LocalListener {
+        fun onItemClick(l: Local, v: View, position: Int)
+    }
+
+    interface AlmacenLogisticaListener {
+        fun onItemClick(l: AlmacenLogistica, v: View, position: Int)
+    }
+
+    interface OrdenEstadoListener {
+        fun onItemClick(o: OrdenEstado, v: View, position: Int)
     }
 }

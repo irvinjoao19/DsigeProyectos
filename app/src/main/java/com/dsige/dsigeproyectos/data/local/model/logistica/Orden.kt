@@ -35,6 +35,8 @@ open class Orden {
     var importe: Double = 0.0
     var delegacion: String = ""
     var estadoId: Int = 1
+    var cotiCodigo: String = ""
+    var nivelAcumulado: Int = 0
 
     @Ignore
     var detalles: List<OrdenDetalle>? = null

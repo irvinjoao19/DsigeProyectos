@@ -200,6 +200,7 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorAccentTrans"
@@ -314,32 +315,33 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fabMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        fab:fab_addButtonColorNormal="@color/colorWhite"
-        fab:fab_addButtonColorPressed="@color/white_pressed"
-        fab:fab_addButtonPlusIconColor="@color/half_black"
+        fab:fab_addButtonColorNormal="@color/colorPrimary"
+        fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
+        fab:fab_addButtonPlusIconColor="@color/colorWhite"
         fab:fab_labelStyle="@style/menu_labels_style">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAprobar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_colorPressed="@color/white_pressed"
-            fab:fab_icon="@drawable/ic_check_black"
+            fab:fab_colorNormal="@color/material_green_900"
+            fab:fab_colorPressed="@color/material_green_800"
+            fab:fab_icon="@drawable/ic_check"
             fab:fab_title="Aprobar" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabRechazar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_colorPressed="@color/white_pressed"
-            fab:fab_icon="@drawable/ic_close_black"
+            fab:fab_colorNormal="@color/material_red_900"
+            fab:fab_colorPressed="@color/material_red_800"
+            fab:fab_icon="@drawable/ic_close"
             fab:fab_title="Rechazar" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton

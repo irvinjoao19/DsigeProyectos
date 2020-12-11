@@ -73,11 +73,11 @@ class MainActivity : DaggerAppCompatActivity() {
         recyclerView.adapter = menuAdapter
 
         val menus: ArrayList<MenuPrincipal> = ArrayList()
-        menus.add(MenuPrincipal(1, "Solicitud de Materiales", R.drawable.ic_storage))
+//        menus.add(MenuPrincipal(1, "Solicitud de Materiales", R.drawable.ic_storage))
         menus.add(MenuPrincipal(2, "Logistica", R.drawable.ic_cubos))
-        menus.add(MenuPrincipal(3, "Vehiculos", R.drawable.ic_coche))
-        menus.add(MenuPrincipal(4, "Gestion de Proyectos", R.drawable.ic_ruedas))
-        menus.add(MenuPrincipal(5, "Prevención de Seguridad", R.drawable.ic_seguridad))
+//        menus.add(MenuPrincipal(3, "Vehiculos", R.drawable.ic_coche))
+//        menus.add(MenuPrincipal(4, "Gestion de Proyectos", R.drawable.ic_ruedas))
+//        menus.add(MenuPrincipal(5, "Prevención de Seguridad", R.drawable.ic_seguridad))
         menus.add(MenuPrincipal(6, "Salir", R.drawable.ic_logout))
         menuAdapter.addItems(menus)
 

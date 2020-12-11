@@ -126,7 +126,7 @@ class LoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
     private fun goMainActivity() {
         startActivity(
-            Intent(this, FiltroActivity::class.java)
+            Intent(this, MainActivity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         )
     }

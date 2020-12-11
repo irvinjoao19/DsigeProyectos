@@ -30,14 +30,13 @@ open class Query {
     var personalDni: String = ""
 
     var login: String = ""
-
     var imei: String = ""
     var version: String = ""
 
     var matricula: String = ""
     var cantidad: Double = 0.0
     var detalleId: Int = 0
-
+    var delegacionId: String = ""
 
 
     constructor()
@@ -54,14 +53,21 @@ open class Query {
         this.version = version
     }
 
-    constructor(usuarioId: String,detalleId: Int, matricula: String, cantidad: Double) {
+    constructor(usuarioId: String, detalleId: Int, matricula: String, cantidad: Double,tipoProceso: String) {
         this.usuarioId = usuarioId
         this.detalleId = detalleId
         this.matricula = matricula
         this.cantidad = cantidad
+        this.tipoProceso  = tipoProceso
     }
 
-    constructor(detalleId: Int,usuarioId: String, tipoProceso: String, search: String,matricula: String) {
+    constructor(
+        detalleId: Int,
+        usuarioId: String,
+        tipoProceso: String,
+        search: String,
+        matricula: String
+    ) {
         this.usuarioId = usuarioId
         this.tipoProceso = tipoProceso
         this.search = search

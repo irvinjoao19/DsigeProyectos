@@ -52,12 +52,16 @@
     </style>
 
     <style name="menu_labels_style">
-        <item name="android:background">@color/colorTrans</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">8sp</item>
     </style>
 
     <style name="menu_material">
-        <item name="android:background">@color/colorTrans</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">8sp</item>
     </style>
 </resources>

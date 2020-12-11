@@ -1,6 +1,7 @@
 package com.dsige.dsigeproyectos.data.viewModel
 
 import android.util.Log
+import androidx.core.graphics.rotationMatrix
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -120,36 +121,45 @@ internal constructor(private val roomRepository: AppRepository, private val retr
 
     // orden
 
-    fun getSyncOrden(u: String) {
-        roomRepository.getSyncOrden(u)
+    fun getSyncOrden(q: Query) {
+        roomRepository.getClearOrden()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<List<Orden>> {
-                override fun onSubscribe(d: Disposable) {
-
-                }
-
-                override fun onNext(t: List<Orden>) {
-                    insertOrden(t)
-                }
-
-                override fun onError(t: Throwable) {
-                    if (t is HttpException) {
-                        val body = t.response().errorBody()
-                        try {
-                            val error = retrofit.errorConverter.convert(body!!)
-                            mensajeError.postValue(error.Message)
-                        } catch (e1: IOException) {
-                            e1.printStackTrace()
-                        }
-                    } else {
-                        mensajeError.postValue(t.message)
-                    }
-                    loading.value = false
-                }
-
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onError(e: Throwable) {}
                 override fun onComplete() {
+                    roomRepository.getSyncOrden(q)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<List<Orden>> {
+                            override fun onSubscribe(d: Disposable) {
 
+                            }
+
+                            override fun onNext(t: List<Orden>) {
+                                insertOrden(t)
+                            }
+
+                            override fun onError(t: Throwable) {
+                                if (t is HttpException) {
+                                    val body = t.response().errorBody()
+                                    try {
+                                        val error = retrofit.errorConverter.convert(body!!)
+                                        mensajeError.postValue(error.Message)
+                                    } catch (e1: IOException) {
+                                        e1.printStackTrace()
+                                    }
+                                } else {
+                                    mensajeError.postValue(t.message)
+                                }
+                                loading.value = false
+                            }
+
+                            override fun onComplete() {
+
+                            }
+                        })
                 }
             })
     }
@@ -428,21 +438,15 @@ internal constructor(private val roomRepository: AppRepository, private val retr
         return roomRepository.getTipos()
     }
 
-    fun sendUpdateCantidad(q: Query, id: Int) {
-        val json = Gson().toJson(q)
-        Log.i("TAG", json)
-        val body =
-            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
-        roomRepository.sendUpdateCantidadPedido(body)
+    fun sendUpdateCantidad(q: Query, id: Int,tipo:Int) {
+        roomRepository.sendUpdateCantidadPedido(q,tipo)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<Mensaje> {
-                override fun onSubscribe(d: Disposable) {
-
-                }
-
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
                 override fun onNext(t: Mensaje) {
-                    updateCantidadPedido(id, q.cantidad)
+                    updateCantidadPedido(id, q.cantidad,tipo)
                 }
 
                 override fun onError(t: Throwable) {
@@ -458,13 +462,11 @@ internal constructor(private val roomRepository: AppRepository, private val retr
                         mensajeError.postValue(t.message)
                     }
                 }
-
-                override fun onComplete() {}
             })
     }
 
-    private fun updateCantidadPedido(id: Int, cantidad: Double) {
-        roomRepository.updateCantidadPedido(id, cantidad)
+    private fun updateCantidadPedido(id: Int, cantidad: Double,tipo:Int) {
+        roomRepository.updateCantidadPedido(id, cantidad,tipo)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {
@@ -476,20 +478,14 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             })
     }
 
-    //tipo -> orden o pedido
-    fun sendAprobarORechazar(tipo: Int, q: Query, cabeceraId: Int) {
-        val json = Gson().toJson(q)
-        Log.i("TAG", json)
-        val body =
-            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
-        roomRepository.sendUpdateAprobacionOrRechazo(body)
+    //tipo -> orden
+    fun sendAprobarORechazarOrden(tipo: Int, q: Query, cabeceraId: Int) {
+        roomRepository.sendUpdateAprobacionOrRechazo(q)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<Mensaje> {
-                override fun onSubscribe(d: Disposable) {
-
-                }
-
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
                 override fun onNext(t: Mensaje) {
                     updateAprobacionOrRechazo(tipo, cabeceraId)
                 }
@@ -507,8 +503,60 @@ internal constructor(private val roomRepository: AppRepository, private val retr
                         mensajeError.postValue(t.message)
                     }
                 }
+            })
+    }
 
+    fun sendAprobarORechazarPedido(tipo: Int, q: Query, cabeceraId: Int) {
+        roomRepository.sendAprobacionPedido(q)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Mensaje> {
+                override fun onSubscribe(d: Disposable) {}
                 override fun onComplete() {}
+                override fun onNext(t: Mensaje) {
+                    updateAprobacionOrRechazo(tipo, cabeceraId)
+                }
+
+                override fun onError(t: Throwable) {
+                    if (t is HttpException) {
+                        val b = t.response().errorBody()
+                        try {
+                            val error = retrofit.errorConverter.convert(b!!)
+                            mensajeError.postValue(error.Message)
+                        } catch (e1: IOException) {
+                            e1.printStackTrace()
+                        }
+                    } else {
+                        mensajeError.postValue(t.message)
+                    }
+                }
+            })
+    }
+
+    fun sendAprobarORechazarCampoJefeTiempoVida(tipo: Int, q: Query, cabeceraId: Int) {
+        roomRepository.sendAprobacionCampoJefeTiempoVida(q)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Mensaje> {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
+                override fun onNext(t: Mensaje) {
+                    updateAprobacionOrRechazo(tipo, cabeceraId)
+                }
+
+                override fun onError(t: Throwable) {
+                    if (t is HttpException) {
+                        val b = t.response().errorBody()
+                        try {
+                            val error = retrofit.errorConverter.convert(b!!)
+                            mensajeError.postValue(error.Message)
+                        } catch (e1: IOException) {
+                            e1.printStackTrace()
+                        }
+                    } else {
+                        mensajeError.postValue(t.message)
+                    }
+                }
             })
     }
 
@@ -518,11 +566,18 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {}
-                override fun onComplete() {}
+                override fun onComplete() {
+                    mensajeSuccess.value = "Actualizado.."
+                }
+
                 override fun onError(e: Throwable) {
                     mensajeError.value = e.message
                 }
             })
+    }
+
+    fun getComboEstado(): LiveData<ComboEstado> {
+        return roomRepository.getComboEstado()
     }
 
     fun getCombosEstados(): LiveData<List<ComboEstado>> {
@@ -530,11 +585,7 @@ internal constructor(private val roomRepository: AppRepository, private val retr
     }
 
     fun sendAnulacion(tipo: Int, q: Query, cabeceraId: Int) {
-        val json = Gson().toJson(q)
-        Log.i("TAG", json)
-        val body =
-            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
-        roomRepository.sendAnulacion(body)
+        roomRepository.sendAnulacion(q)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<Mensaje> {
@@ -576,4 +627,125 @@ internal constructor(private val roomRepository: AppRepository, private val retr
                 }
             })
     }
+
+    fun getLocal(): LiveData<List<Local>> {
+        return roomRepository.getLocales()
+    }
+
+    fun getAlmacenLogistica(): LiveData<List<AlmacenLogistica>> {
+        return roomRepository.getAlmacenLogistica()
+    }
+
+    // todo campo jefe
+
+    fun getCampoJefes(): LiveData<List<CampoJefe>> {
+        return roomRepository.getCampoJefes()
+    }
+
+    // todo tiempo vida
+
+    fun getTiempoVida(): LiveData<List<TiempoVida>> {
+        return roomRepository.getTiempoVida()
+    }
+
+    fun getSyncCampoJefe(q: Query) {
+        roomRepository.getSyncCampoJefe(q)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<List<CampoJefe>> {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
+                override fun onNext(t: List<CampoJefe>) {
+                    insertCampoJefe(t)
+                }
+
+                override fun onError(t: Throwable) {
+                    if (t is HttpException) {
+                        val b = t.response().errorBody()
+                        try {
+                            val error = retrofit.errorConverter.convert(b!!)
+                            mensajeError.postValue(error.Message)
+                        } catch (e1: IOException) {
+                            e1.printStackTrace()
+                        }
+                    } else {
+                        mensajeError.postValue(t.message)
+                    }
+                }
+            })
+    }
+
+    private fun insertCampoJefe(t: List<CampoJefe>) {
+        roomRepository.insertCampoJefe(t)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
+                override fun onError(e: Throwable) {}
+            })
+    }
+
+    fun getSyncTiempoVida(q: Query) {
+        roomRepository.getSyncTiempoVida(q)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<List<TiempoVida>> {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
+                override fun onNext(t: List<TiempoVida>) {
+                    insertTiempoVida(t)
+                }
+
+                override fun onError(t: Throwable) {
+                    if (t is HttpException) {
+                        val b = t.response().errorBody()
+                        try {
+                            val error = retrofit.errorConverter.convert(b!!)
+                            mensajeError.postValue(error.Message)
+                        } catch (e1: IOException) {
+                            e1.printStackTrace()
+                        }
+                    } else {
+                        mensajeError.postValue(t.message)
+                    }
+                }
+            })
+    }
+
+    private fun insertTiempoVida(t: List<TiempoVida>) {
+        roomRepository.insertTiempoVida(t)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
+                override fun onError(e: Throwable) {}
+            })
+    }
+
+    fun getCampoJefeGroupOne(codigo: String): LiveData<CampoJefe> {
+        return roomRepository.getCampoJefeGroupOne(codigo)
+    }
+
+    fun getCampoJefeByCodigo(codigo: String): LiveData<List<CampoJefe>> {
+        return roomRepository.getCampoJefeByCodigo(codigo)
+    }
+
+    fun getCampoTiempoVidaOne(codigo: String): LiveData<TiempoVida> {
+        return roomRepository.getCampoTiempoVidaOne(codigo)
+    }
+
+    fun getTiempoVidaByCodigo(codigo: String): LiveData<List<TiempoVida>> {
+        return roomRepository.getTiempoVidaByCodigo(codigo)
+    }
+
+    fun getOrdenEstados(): LiveData<List<OrdenEstado>> {
+        return roomRepository.getOrdenEstados()
+    }
+
+    fun getOrdenEstadoByOne(): LiveData<OrdenEstado> {
+        return roomRepository.getOrdenEstadoByOne()
+    }
+
 }

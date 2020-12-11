@@ -174,14 +174,14 @@ interface AppRepository {
     fun getSyncPedido(u: String): Observable<List<Pedido>>
     fun insertPedido(t: List<Pedido>): Completable
     fun getPedidoGroup(): LiveData<List<Pedido>>
-    fun getPedidoGroup(e:String): LiveData<List<Pedido>>
+    fun getPedidoGroup(e: String): LiveData<List<Pedido>>
     fun getPedidoGroupOne(codigo: String): LiveData<Pedido>
     fun getPedidoByCodigo(codigo: String): LiveData<List<Pedido>>
-    fun sendUpdateCantidadPedido(body: RequestBody): Observable<Mensaje>
-    fun updateCantidadPedido(id: Int, cantidad: Double): Completable
+    fun sendUpdateCantidadPedido(q: Query,tipo:Int): Observable<Mensaje>
+    fun updateCantidadPedido(id: Int, cantidad: Double,tipo:Int): Completable
 
     //orden
-    fun getSyncOrden(u: String): Observable<List<Orden>>
+    fun getSyncOrden(q: Query): Observable<List<Orden>>
     fun insertOrden(t: List<Orden>): Completable
     fun getOrdenGroup(): LiveData<List<Orden>>
     fun getOrdenGroup(e: String): LiveData<List<Orden>>
@@ -195,11 +195,13 @@ interface AppRepository {
     fun getAnulacionGroup(): LiveData<List<Anulacion>>
     fun getAnulacionGroupOne(codigo: String): LiveData<Anulacion>
     fun getAnulacionByCodigo(codigo: String): LiveData<List<Anulacion>>
-    fun sendAnulacion(body: RequestBody): Observable<Mensaje>
+    fun sendAnulacion(q: Query): Observable<Mensaje>
     fun updateAnulacion(tipo: Int, id: Int): Completable
 
     //ambos pedido y orden
-    fun sendUpdateAprobacionOrRechazo(body: RequestBody): Observable<Mensaje>
+    fun sendUpdateAprobacionOrRechazo(q: Query): Observable<Mensaje>
+    fun sendAprobacionPedido(q: Query): Observable<Mensaje>
+    fun sendAprobacionCampoJefeTiempoVida(q: Query): Observable<Mensaje>
     fun updateAprobacionOrRechazo(tipo: Int, id: Int): Completable
     fun getCombosEstados(): LiveData<List<ComboEstado>>
 
@@ -224,5 +226,20 @@ interface AppRepository {
     fun getRequerimientoCentroCostos(): LiveData<List<RequerimientoCentroCosto>>
     fun getRequerimientoEstado(): LiveData<List<RequerimientoEstado>>
     fun getTipos(): LiveData<List<RequerimientoTipo>>
-
+    fun getCampoJefes(): LiveData<List<CampoJefe>>
+    fun getTiempoVida(): LiveData<List<TiempoVida>>
+    fun getLocales(): LiveData<List<Local>>
+    fun getAlmacenLogistica(): LiveData<List<AlmacenLogistica>>
+    fun getSyncCampoJefe(q: Query): Observable<List<CampoJefe>>
+    fun getSyncTiempoVida(q: Query): Observable<List<TiempoVida>>
+    fun insertCampoJefe(t: List<CampoJefe>): Completable
+    fun insertTiempoVida(t: List<TiempoVida>): Completable
+    fun getCampoJefeGroupOne(codigo: String): LiveData<CampoJefe>
+    fun getCampoJefeByCodigo(codigo: String): LiveData<List<CampoJefe>>
+    fun getCampoTiempoVidaOne(codigo: String): LiveData<TiempoVida>
+    fun getTiempoVidaByCodigo(codigo: String): LiveData<List<TiempoVida>>
+    fun getOrdenEstados(): LiveData<List<OrdenEstado>>
+    fun getOrdenEstadoByOne(): LiveData<OrdenEstado>
+    fun getClearOrden() :Completable
+    fun getComboEstado(): LiveData<ComboEstado>
 }

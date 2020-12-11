@@ -88,17 +88,18 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
+            app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout2">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextDescripcion"
-                android:hint="Ingrese Descripción del Material"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
                 android:focusable="false"
+                android:hint="Ingrese Descripción del Material"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Cantidad"
+            android:text="UM"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -120,16 +121,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
+            app:hintEnabled="false"
             app:layout_constraintEnd_toStartOf="@+id/layoutDelegacion"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout3">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextCantidad"
+                android:id="@+id/editTextUM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Cantidad"
-                android:inputType="numberDecimal" />
+                android:focusable="false"
+                android:hint="UM" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -137,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="UM"
+            android:text="Cantidad"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/layoutDelegacion"
@@ -151,18 +153,18 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
+            app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/layoutFecha"
             app:layout_constraintTop_toBottomOf="@+id/layout3">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextUM"
+                android:id="@+id/editTextCantidad"
                 android:layout_width="match_parent"
-                android:hint="UM"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:hint="Cantidad"
+                android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fabGenerate"

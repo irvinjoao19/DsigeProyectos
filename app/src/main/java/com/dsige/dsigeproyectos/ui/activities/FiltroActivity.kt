@@ -149,18 +149,8 @@ class FiltroActivity : DaggerAppCompatActivity(), View.OnClickListener {
                     }
                 })
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         areaAdapter.getFilter().filter(editTextSearch.text.toString())
                     }
@@ -186,18 +176,8 @@ class FiltroActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 })
 
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         centroAdapter.getFilter().filter(editTextSearch.text.toString())
                     }
@@ -220,18 +200,8 @@ class FiltroActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 })
 
                 editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
-                    override fun onTextChanged(
-                        charSequence: CharSequence, i: Int, i1: Int, i2: Int
-                    ) {
-
-                    }
-
+                    override fun beforeTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(c: CharSequence, i: Int, i1: Int, i2: Int) {}
                     override fun afterTextChanged(editable: Editable) {
                         sucursalAdapter.getFilter().filter(editTextSearch.text.toString())
                     }
@@ -267,5 +237,4 @@ class FiltroActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         )
     }
-
 }

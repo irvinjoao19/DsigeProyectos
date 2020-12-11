@@ -43,39 +43,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Seleccione Estado"
                 android:drawableEnd="@drawable/ic_down"
-                android:focusable="false" />
+                android:focusable="false"
+                android:hint="Seleccione Delegación" />
 
-        <LinearLayout
-            android:id="@+id/layout3"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextFinicio"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
+            <LinearLayout
+                android:id="@+id/layout3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:hint="F. Inicial"
-                android:drawableEnd="@drawable/ic_date"
-                android:focusable="false" />
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextFfinal"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextFinicio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.5"
+                    android:drawableEnd="@drawable/ic_date"
+                    android:focusable="false"
+                    android:hint="F. Inicial" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextFfinal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.5"
+                    android:drawableEnd="@drawable/ic_date"
+                    android:focusable="false"
+                    android:hint="F. Final" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout4"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:hint="F. Final"
-                android:drawableEnd="@drawable/ic_date"
-                android:focusable="false" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextLocal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:drawableEnd="@drawable/ic_down"
+                    android:focusable="false"
+                    android:hint="Seleccione Local" />
 
-        </LinearLayout>
-
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextAlmacen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:drawableEnd="@drawable/ic_down"
+                    android:focusable="false"
+                    android:hint="Seleccione Almacen" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

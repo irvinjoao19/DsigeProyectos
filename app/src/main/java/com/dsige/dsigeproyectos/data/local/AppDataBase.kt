@@ -53,9 +53,14 @@ import com.dsige.dsigeproyectos.data.local.model.trinidad.*
         RequerimientoTipo::class,
         RequerimientoCentroCosto::class,
         ComboEstado::class,
-        Anulacion::class
+        Anulacion::class,
+        TiempoVida::class,
+        CampoJefe::class,
+        AlmacenLogistica::class,
+        Local::class,
+        OrdenEstado::class
     ],
-    version = 26,
+    version = 31,
     exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
@@ -108,6 +113,12 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun requerimientoCentroCostoDao(): RequerimientoCentroCostoDao
     abstract fun comboEstadoDao(): ComboEstadoDao
     abstract fun anulacionDao(): AnulacionDao
+
+    abstract fun tiempoVidaDao(): TiempoVidaDao
+    abstract fun campoJefeDao(): CampoJefeDao
+    abstract fun almacenLDao(): AlmacenLogisticaDao
+    abstract fun localDao(): LocalDao
+    abstract fun ordenEstadoDao(): OrdenEstadoDao
 
 
     companion object {

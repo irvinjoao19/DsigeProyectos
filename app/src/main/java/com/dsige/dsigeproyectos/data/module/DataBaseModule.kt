@@ -233,4 +233,29 @@ class DataBaseModule {
     internal fun provideAnulacionDao(appDataBase: AppDataBase): AnulacionDao {
         return appDataBase.anulacionDao()
     }
+
+    @Provides
+    internal fun provideCampoJefeDao(appDataBase: AppDataBase): CampoJefeDao {
+        return appDataBase.campoJefeDao()
+    }
+
+    @Provides
+    internal fun provideTiempoVidaDao(appDataBase: AppDataBase): TiempoVidaDao {
+        return appDataBase.tiempoVidaDao()
+    }
+
+    @Provides
+    internal fun provideLocalDao(appDataBase: AppDataBase): LocalDao {
+        return appDataBase.localDao()
+    }
+
+    @Provides
+    internal fun provideAlmacenLDao(appDataBase: AppDataBase): AlmacenLogisticaDao {
+        return appDataBase.almacenLDao()
+    }
+
+    @Provides
+    internal fun provideOrdenEstadoDao(appDataBase: AppDataBase): OrdenEstadoDao {
+        return appDataBase.ordenEstadoDao()
+    }
 }

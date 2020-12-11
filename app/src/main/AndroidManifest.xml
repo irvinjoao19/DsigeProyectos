@@ -29,7 +29,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:targetApi="q">
-        <activity android:name=".ui.activities.logistica.AprobationDetailActivity"></activity>
+        <activity android:name=".ui.activities.logistica.AprobationDetailActivity" />
         <activity android:name=".ui.activities.logistica.AprobacionActivity" />
         <activity android:name=".ui.activities.logistica.MenuAprobacionActivity" />
         <activity android:name=".ui.activities.logistica.RequerimientoFormActivity" />

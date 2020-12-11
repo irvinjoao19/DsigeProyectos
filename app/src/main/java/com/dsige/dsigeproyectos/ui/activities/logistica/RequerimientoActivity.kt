@@ -127,6 +127,7 @@ class RequerimientoActivity : DaggerAppCompatActivity(), View.OnClickListener {
             closeLoad()
             Util.toastMensaje(this, it)
         })
+        editTextFecha.setText(Util.getFecha())
         editTextFecha.setOnClickListener(this)
         editTextEstado.setOnClickListener(this)
         fabGenerate.setOnClickListener(this)

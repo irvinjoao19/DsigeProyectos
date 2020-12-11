@@ -9,7 +9,6 @@ open class Sync {
     var parametrosT: List<ParametroT> = ArrayList()
     var vehiculos: List<Vehiculo> = ArrayList()
     var estados: List<Estado> = ArrayList()
-
     var almacens: List<Almacen> = ArrayList()
     var parametrosE: List<ParametroE> = ArrayList()
     var parteDiarios: List<ParteDiario> = ArrayList()
@@ -22,11 +21,16 @@ open class Sync {
     var medidores: List<Medidor> = ArrayList()
     var devoluciones: List<TipoDevolucion> = ArrayList()
     var personals: List<Personal> = ArrayList()
-    var delegaciones: List<Delegacion> = ArrayList()
-    var requerimientoMateriales : List<RequerimientoMaterial> = ArrayList()
 
-    var requerimientoEstado : List<RequerimientoEstado> = ArrayList()
-    var comboEstados : List<ComboEstado> = ArrayList()
-    var requerimientoTipo : List<RequerimientoTipo> = ArrayList()
-    var requerimientoCentroCostos : List<RequerimientoCentroCosto> = ArrayList()
+
+    var delegaciones: List<Delegacion> = ArrayList()
+    var requerimientoMateriales: List<RequerimientoMaterial> = ArrayList()
+    var requerimientoEstado: List<RequerimientoEstado> = ArrayList()
+    var comboEstados: List<ComboEstado> = ArrayList()
+    var requerimientoTipo: List<RequerimientoTipo> = ArrayList()
+    var requerimientoCentroCostos: List<RequerimientoCentroCosto> = ArrayList()
+    var almacenes: List<AlmacenLogistica> = ArrayList()
+    var locales: List<Local> = ArrayList()
+    var ordenEstados: List<OrdenEstado> = ArrayList()
+
 }

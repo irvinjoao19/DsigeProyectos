@@ -116,8 +116,8 @@ interface ApiService {
     fun getPedidosCompra(@Query("usuario") u: String): Observable<List<Pedido>>
 
     @Headers("Cache-Control: no-cache")
-    @GET("OrdenCompra")
-    fun getOrdenCompra(@Query("usuario") u: String): Observable<List<Orden>>
+    @POST("OrdenCompra")
+    fun getOrdenCompra(@Body query: RequestBody): Observable<List<Orden>>
 
     @Headers("Cache-Control: no-cache")
     @GET("GetAnulacion")
@@ -136,10 +136,30 @@ interface ApiService {
     fun updateCantidad(@Body query: RequestBody): Observable<Mensaje>
 
     @Headers("Cache-Control: no-cache")
+    @POST("UpdateCantidadCampoJefeTiempoVida")
+    fun UpdateCantidadCampoJefeTiempoVida(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
     @POST("AprobacionOrdenCompra")
     fun aprobacionOrdenCompra(@Body query: RequestBody): Observable<Mensaje>
 
     @Headers("Cache-Control: no-cache")
+    @POST("AprobacionPedido")
+    fun aprobacionPedido(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("AprobacionCampoJefeTiempoVida")
+    fun aprobacionCampoJefeTiempoVida(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
     @POST("AnularEvento")
     fun sendAnulacion(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("CampoJefe")
+    fun getCampoJefe(@Body query: RequestBody): Observable<List<CampoJefe>>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("TiempoVida")
+    fun getTiempoVida(@Body query: RequestBody): Observable<List<TiempoVida>>
 }

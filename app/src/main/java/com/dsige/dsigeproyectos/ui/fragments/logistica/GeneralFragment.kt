@@ -85,6 +85,7 @@ class GeneralFragment : DaggerFragment(), View.OnClickListener {
             ViewModelProvider(this, viewModelFactory).get(LogisticaViewModel::class.java)
 
         editTextNro.setText(requerimientoId.toString())
+        editTextFecha.setText(Util.getFecha())
 
         logisticaViewModel.getRequerimientoById(requerimientoId).observe(viewLifecycleOwner, {
             if (it != null) {

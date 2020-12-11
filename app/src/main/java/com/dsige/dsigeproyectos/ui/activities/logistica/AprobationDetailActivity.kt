@@ -2,7 +2,6 @@ package com.dsige.dsigeproyectos.ui.activities.logistica
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -16,28 +15,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dsige.dsigeproyectos.R
 import com.dsige.dsigeproyectos.data.local.model.Query
-import com.dsige.dsigeproyectos.data.local.model.logistica.Anulacion
-import com.dsige.dsigeproyectos.data.local.model.logistica.Orden
-import com.dsige.dsigeproyectos.data.local.model.logistica.OrdenDetalle
-import com.dsige.dsigeproyectos.data.local.model.logistica.Pedido
+import com.dsige.dsigeproyectos.data.local.model.logistica.*
 import com.dsige.dsigeproyectos.data.viewModel.LogisticaViewModel
 import com.dsige.dsigeproyectos.data.viewModel.ViewModelFactory
 import com.dsige.dsigeproyectos.helper.Util
 import com.dsige.dsigeproyectos.ui.adapters.*
 import com.dsige.dsigeproyectos.ui.listeners.OnItemClickListener
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_aprobation_detail.*
-import kotlinx.android.synthetic.main.cardview_pedido_detalle.view.*
 import javax.inject.Inject
 
 class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.fabAprobar -> messageDialog(tipo, "A", "Aprobar Orden de Compra")
-            R.id.fabRechazar -> messageDialog(tipo, "D", "Rechazar Orden de Compra")
-            R.id.fabAnular -> messageDialog(tipo, "D", "Anular Orden de Compra")
+            R.id.fabAprobar -> aprobarOrdenCompra(tipo)
+            R.id.fabRechazar -> messageDialog(tipo, "D")
+            R.id.fabAnular -> messageDialog(tipo, "D")
         }
     }
 
@@ -97,7 +93,7 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                     PedidoDetalleAdapter(object : OnItemClickListener.PedidoListener {
                         override fun onItemClick(p: Pedido, v: View, position: Int) {
                             when (v.id) {
-                                R.id.textView31 -> updateCantidad(p)
+                                R.id.textView31 -> updateCantidadPedido(p)
                             }
                         }
                     })
@@ -179,6 +175,76 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                     ordenAdapter.addItems(it)
                 })
             }
+            4 -> {
+                logisticaViewModel.getCampoJefeGroupOne(codigo).observe(this, {
+                    layout2.visibility = View.VISIBLE
+                    layout3.visibility = View.GONE
+                    textView11.text = it.pedcNumero
+                    textView12.text = it.obraCodigo
+                    textView13.text = it.almaCodigo
+                    textView14.text = it.nomApellidos
+                    textView15.text = it.nombreOt
+                    textView16.text = it.usuarioCrea
+                    textView18.text = String.format("Fec Ped.: %s", it.pedcFechaEnvio)
+                    textView17.visibility = View.GONE
+                    textView30.visibility = View.GONE
+                    textView31.visibility = View.GONE
+                    textView32.visibility = View.GONE
+                    textView33.visibility = View.GONE
+                })
+
+                val campoJefeGroupAdapter =
+                    CampoJefeGroupAdapter(object : OnItemClickListener.CampoJefeListener {
+                        override fun onItemClick(c: CampoJefe, v: View, position: Int) {
+                            when (v.id) {
+                                R.id.textView31 -> updateCantidadCampoJefe(c)
+                            }
+                        }
+                    })
+                recyclerView.itemAnimator = DefaultItemAnimator()
+                val layoutManager = LinearLayoutManager(this)
+                recyclerView.layoutManager = layoutManager
+                recyclerView.setHasFixedSize(true)
+                recyclerView.adapter = campoJefeGroupAdapter
+                logisticaViewModel.getCampoJefeByCodigo(codigo).observe(this, {
+                    campoJefeGroupAdapter.addItems(it)
+                })
+            }
+            5 -> {
+                logisticaViewModel.getCampoTiempoVidaOne(codigo).observe(this, {
+                    layout2.visibility = View.VISIBLE
+                    layout3.visibility = View.GONE
+                    textView11.text = it.pedcNumero
+                    textView12.text = it.obraCodigo
+                    textView13.text = it.almaCodigo
+                    textView14.text = it.nomApellidos
+                    textView15.text = it.nombreOt
+                    textView16.text = it.usuarioCrea
+                    textView18.text = String.format("Fec Ped.: %s", it.pedcFechaEnvio)
+                    textView17.visibility = View.GONE
+                    textView30.visibility = View.GONE
+                    textView31.visibility = View.GONE
+                    textView32.visibility = View.GONE
+                    textView33.visibility = View.GONE
+                })
+
+                val tiempoVidaGroupAdapter =
+                    TiempoVidaGroupAdapter(object : OnItemClickListener.TiempoVidaListener {
+                        override fun onItemClick(t: TiempoVida, v: View, position: Int) {
+                            when (v.id) {
+                                R.id.textView31 -> updateCantidadTiempoVida(t)
+                            }
+                        }
+                    })
+                recyclerView.itemAnimator = DefaultItemAnimator()
+                val layoutManager = LinearLayoutManager(this)
+                recyclerView.layoutManager = layoutManager
+                recyclerView.setHasFixedSize(true)
+                recyclerView.adapter = tiempoVidaGroupAdapter
+                logisticaViewModel.getTiempoVidaByCodigo(codigo).observe(this, {
+                    tiempoVidaGroupAdapter.addItems(it)
+                })
+            }
         }
 
         logisticaViewModel.mensajeSuccess.observe(this, {
@@ -192,7 +258,7 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         })
     }
 
-    private fun updateCantidad(p: Pedido) {
+    private fun updateCantidadPedido(p: Pedido) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
         @SuppressLint("InflateParams") val v =
             LayoutInflater.from(this).inflate(R.layout.dialog_aprobacion, null)
@@ -214,8 +280,12 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 Util.toastMensaje(this, "Ingrese cantidad")
                 return@setOnClickListener
             }
-            val q = Query(usuarioId, p.id, p.articulo, editText2.text.toString().toDouble())
-            logisticaViewModel.sendUpdateCantidad(q, p.id)
+            if (editText2.text.toString().toDouble() > p.cantidad) {
+                Util.toastMensaje(this, "Cantidad debe ser menor o igual a la cantidad solicitada")
+                return@setOnClickListener
+            }
+            val q = Query(usuarioId, p.id, p.articulo, editText2.text.toString().toDouble(), "1")
+            logisticaViewModel.sendUpdateCantidad(q, p.id, 1)
             dialog.dismiss()
         }
         buttonCancelar.setOnClickListener {
@@ -223,7 +293,77 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         }
     }
 
-    private fun messageDialog(formato: Int, tipo: String, title: String) {
+    private fun updateCantidadCampoJefe(p: CampoJefe) {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v =
+            LayoutInflater.from(this).inflate(R.layout.dialog_aprobacion, null)
+        val textviewTitle: TextView = v.findViewById(R.id.textviewTitle)
+        val editText1: EditText = v.findViewById(R.id.editText1)
+        val editText2: EditText = v.findViewById(R.id.editText2)
+        val buttonAceptar: MaterialButton = v.findViewById(R.id.buttonAceptar)
+        val buttonCancelar: MaterialButton = v.findViewById(R.id.buttonCancelar)
+        textviewTitle.text = String.format("%s", "Cantidad Aprobada")
+        editText1.visibility = View.GONE
+        editText2.visibility = View.VISIBLE
+
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
+        buttonAceptar.setOnClickListener {
+            if (editText2.text.toString().isEmpty()) {
+                Util.toastMensaje(this, "Ingrese cantidad")
+                return@setOnClickListener
+            }
+            if (editText2.text.toString().toDouble() > p.cantidadAprobada) {
+                Util.toastMensaje(this, "Cantidad debe ser menor o igual a la cantidad aprobada")
+                return@setOnClickListener
+            }
+            val q = Query(usuarioId, p.id, p.articulo, editText2.text.toString().toDouble(), "1")
+            logisticaViewModel.sendUpdateCantidad(q, p.id, 4)
+            dialog.dismiss()
+        }
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun updateCantidadTiempoVida(p: TiempoVida) {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v =
+            LayoutInflater.from(this).inflate(R.layout.dialog_aprobacion, null)
+        val textviewTitle: TextView = v.findViewById(R.id.textviewTitle)
+        val editText1: EditText = v.findViewById(R.id.editText1)
+        val editText2: EditText = v.findViewById(R.id.editText2)
+        val buttonAceptar: MaterialButton = v.findViewById(R.id.buttonAceptar)
+        val buttonCancelar: MaterialButton = v.findViewById(R.id.buttonCancelar)
+        textviewTitle.text = String.format("%s", "Cantidad Aprobada")
+        editText1.visibility = View.GONE
+        editText2.visibility = View.VISIBLE
+
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
+        buttonAceptar.setOnClickListener {
+            if (editText2.text.toString().isEmpty()) {
+                Util.toastMensaje(this, "Ingrese cantidad")
+                return@setOnClickListener
+            }
+            if (editText2.text.toString().toDouble() > p.cantidadAprobada) {
+                Util.toastMensaje(this, "Cantidad debe ser menor o igual a la cantidad aprobada")
+                return@setOnClickListener
+            }
+            val q = Query(usuarioId, p.id, p.articulo, editText2.text.toString().toDouble(), "2")
+            logisticaViewModel.sendUpdateCantidad(q, p.id, 5)
+            dialog.dismiss()
+        }
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun messageDialog(formato: Int, tipo: String) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
         @SuppressLint("InflateParams") val v =
             LayoutInflater.from(this).inflate(R.layout.dialog_aprobacion, null)
@@ -231,7 +371,13 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         val editText1: EditText = v.findViewById(R.id.editText1)
         val buttonAceptar: MaterialButton = v.findViewById(R.id.buttonAceptar)
         val buttonCancelar: MaterialButton = v.findViewById(R.id.buttonCancelar)
-        textviewTitle.text = String.format("%s", title)
+        textviewTitle.text = when (formato) {
+            1 -> "Rechazar Pedido"
+            2 -> "Rechazar Orden"
+            3 -> "Anular Orden de Compra"
+            4 -> "Rechazar Campo por Jefe"
+            else -> "Rechazar Campo por Tiempo de Vida"
+        }
         builder.setView(v)
         val dialog = builder.create()
         dialog.show()
@@ -239,11 +385,18 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         buttonAceptar.setOnClickListener {
 
             val obs = editText1.text.toString()
-            val q = Query(cabeceraId, usuarioId, tipo, obs,"")
+            val q = Query(cabeceraId, usuarioId, tipo, obs, "")
 
             when (formato) {
-                1, 2 -> logisticaViewModel.sendAprobarORechazar(formato, q, cabeceraId)
+                1 -> logisticaViewModel.sendAprobarORechazarPedido(formato, q, cabeceraId)
+                2 -> logisticaViewModel.sendAprobarORechazarOrden(formato, q, cabeceraId)
                 3 -> logisticaViewModel.sendAnulacion(formato, q, cabeceraId)
+                4 -> logisticaViewModel.sendAprobarORechazarCampoJefeTiempoVida(
+                    formato, q, cabeceraId
+                )
+                5 -> logisticaViewModel.sendAprobarORechazarCampoJefeTiempoVida(
+                    formato, q, cabeceraId
+                )
             }
 
             load()
@@ -307,4 +460,37 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
             }
         }
     }
+
+    private fun aprobarOrdenCompra(formato: Int) {
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle("Mensaje")
+            .setMessage(when(formato){
+                1 -> "Deseas aprobar Pedido"
+                2 -> "Deseas aprobar Orden"
+                4 -> "Deseas aprobar Campo por Jefe"
+                else -> "Deseas aprobar Campo por Tiempo de Vida"
+            })
+            .setPositiveButton("Aceptar") { dialog, _ ->
+                load()
+                val q = Query(cabeceraId, usuarioId, "A", "", "")
+                when (formato) {
+                    1 -> logisticaViewModel.sendAprobarORechazarPedido(formato, q, cabeceraId)
+                    2 -> logisticaViewModel.sendAprobarORechazarOrden(formato, q, cabeceraId)
+                    3 -> logisticaViewModel.sendAnulacion(formato, q, cabeceraId)
+                    4 -> logisticaViewModel.sendAprobarORechazarCampoJefeTiempoVida(
+                        formato, q, cabeceraId
+                    )
+                    5 -> logisticaViewModel.sendAprobarORechazarCampoJefeTiempoVida(
+                        formato, q, cabeceraId
+                    )
+                }
+
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.cancel()
+            }
+        dialog.show()
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.dsige.dsigeproyectos.data.local.repository
 
 import android.content.Context
-import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.Config
@@ -241,6 +240,18 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
             val c1: List<ComboEstado>? = s.comboEstados
             if (c1 != null) {
                 dataBase.comboEstadoDao().insertComboEstadoListTask(c1)
+            }
+            val c2: List<AlmacenLogistica>? = s.almacenes
+            if (c2 != null) {
+                dataBase.almacenLDao().insertAlmacenLogisticaListTask(c2)
+            }
+            val c3: List<Local>? = s.locales
+            if (c3 != null) {
+                dataBase.localDao().insertLocalListTask(c3)
+            }
+            val c4: List<OrdenEstado>? = s.ordenEstados
+            if (c4 != null) {
+                dataBase.ordenEstadoDao().insertOrdenEstadoListTask(c4)
             }
         }
     }
@@ -1094,18 +1105,34 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return dataBase.pedidoDao().getPedidoByCodigo(codigo)
     }
 
-    override fun sendUpdateCantidadPedido(body: RequestBody): Observable<Mensaje> {
-        return apiService.updateCantidad(body)
-    }
-
-    override fun updateCantidadPedido(id: Int, cantidad: Double): Completable {
-        return Completable.fromAction {
-            dataBase.pedidoDao().updateCantidad(id, cantidad)
+    override fun sendUpdateCantidadPedido(q: Query, tipo: Int): Observable<Mensaje> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        return when (tipo) {
+            1 -> apiService.updateCantidad(body)
+            else -> apiService.UpdateCantidadCampoJefeTiempoVida(body)
         }
     }
 
-    override fun getSyncOrden(u: String): Observable<List<Orden>> {
-        return apiService.getOrdenCompra(u)
+    override fun updateCantidadPedido(id: Int, cantidad: Double, tipo: Int): Completable {
+        return Completable.fromAction {
+            when (tipo) {
+                1 -> dataBase.pedidoDao().updateCantidad(id, cantidad)
+                4 -> dataBase.campoJefeDao().updateCantidad(id, cantidad)
+                5 -> dataBase.tiempoVidaDao().updateCantidad(id, cantidad)
+            }
+
+        }
+    }
+
+    override fun getSyncOrden(q: Query): Observable<List<Orden>> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        return apiService.getOrdenCompra(body)
     }
 
     override fun insertOrden(t: List<Orden>): Completable {
@@ -1168,7 +1195,11 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return dataBase.anulacionDao().getAnulacionByCodigo(codigo)
     }
 
-    override fun sendAnulacion(body: RequestBody): Observable<Mensaje> {
+    override fun sendAnulacion(q: Query): Observable<Mensaje> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
         return apiService.sendAnulacion(body)
     }
 
@@ -1178,16 +1209,37 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         }
     }
 
-    override fun sendUpdateAprobacionOrRechazo(body: RequestBody): Observable<Mensaje> {
+    override fun sendUpdateAprobacionOrRechazo(q: Query): Observable<Mensaje> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
         return apiService.aprobacionOrdenCompra(body)
+    }
+
+    override fun sendAprobacionPedido(q: Query): Observable<Mensaje> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        return apiService.aprobacionPedido(body)
+    }
+
+    override fun sendAprobacionCampoJefeTiempoVida(q: Query): Observable<Mensaje> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        return apiService.aprobacionCampoJefeTiempoVida(body)
     }
 
     override fun updateAprobacionOrRechazo(tipo: Int, id: Int): Completable {
         return Completable.fromAction {
-            if (tipo == 1) {
-                dataBase.pedidoDao().updateAprobacion(id)
-            } else {
-                dataBase.ordenDao().updateAprobacion(id)
+            when (tipo) {
+                1 -> dataBase.pedidoDao().updateAprobacion(id)
+                2 -> dataBase.ordenDao().updateAprobacion(id)
+                4 -> dataBase.campoJefeDao().updateAprobacion(id)
+                5 -> dataBase.tiempoVidaDao().updateAprobacion(id)
             }
         }
     }
@@ -1302,5 +1354,84 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
 
     override fun getTipos(): LiveData<List<RequerimientoTipo>> {
         return dataBase.requerimientoTipoDao().getRequerimientoTipos()
+    }
+
+    override fun getCampoJefes(): LiveData<List<CampoJefe>> {
+        return dataBase.campoJefeDao().getCampoJefes()
+    }
+
+    override fun getTiempoVida(): LiveData<List<TiempoVida>> {
+        return dataBase.tiempoVidaDao().getTiempoVidas()
+    }
+
+    override fun getLocales(): LiveData<List<Local>> {
+        return dataBase.localDao().getLocales()
+    }
+
+    override fun getAlmacenLogistica(): LiveData<List<AlmacenLogistica>> {
+        return dataBase.almacenLDao().getAlmacenLogisticas()
+    }
+
+    override fun getSyncCampoJefe(q: Query): Observable<List<CampoJefe>> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        return apiService.getCampoJefe(body)
+    }
+
+    override fun getSyncTiempoVida(q: Query): Observable<List<TiempoVida>> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        return apiService.getTiempoVida(body)
+    }
+
+
+    override fun insertCampoJefe(t: List<CampoJefe>): Completable {
+        return Completable.fromAction {
+            dataBase.campoJefeDao().insertCampoJefeListTask(t)
+        }
+    }
+
+    override fun insertTiempoVida(t: List<TiempoVida>): Completable {
+        return Completable.fromAction {
+            dataBase.tiempoVidaDao().insertTiempoVidaListTask(t)
+        }
+    }
+
+    override fun getCampoJefeGroupOne(codigo: String): LiveData<CampoJefe> {
+        return dataBase.campoJefeDao().getCampoJefeGroupOne(codigo)
+    }
+
+    override fun getCampoJefeByCodigo(codigo: String): LiveData<List<CampoJefe>> {
+        return dataBase.campoJefeDao().getCampoJefeByCodigo(codigo)
+    }
+
+    override fun getCampoTiempoVidaOne(codigo: String): LiveData<TiempoVida> {
+        return dataBase.tiempoVidaDao().getCampoTiempoVidaOne(codigo)
+    }
+
+    override fun getTiempoVidaByCodigo(codigo: String): LiveData<List<TiempoVida>> {
+        return dataBase.tiempoVidaDao().getTiempoVidaByCodigo(codigo)
+    }
+
+    override fun getOrdenEstados(): LiveData<List<OrdenEstado>> {
+        return dataBase.ordenEstadoDao().getOrdenEstados()
+    }
+
+    override fun getOrdenEstadoByOne(): LiveData<OrdenEstado> {
+        return dataBase.ordenEstadoDao().getOrdenEstadoByOne()
+    }
+
+    override fun getClearOrden(): Completable {
+        return Completable.fromAction {
+            dataBase.ordenDao().deleteAll()
+        }
+    }
+
+    override fun getComboEstado(): LiveData<ComboEstado> {
+        return dataBase.comboEstadoDao().getComboEstado()
     }
 }

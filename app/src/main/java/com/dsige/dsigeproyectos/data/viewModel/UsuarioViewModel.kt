@@ -114,7 +114,7 @@ internal constructor(private val roomRepository: AppRepository, private val retr
                     val f = u.filtro
                     val centro: List<CentroCostos> = f.centros
                     val area: List<Area> = f.areas
-                    if (centro.size == 1 && area.size == 1) {
+//                    if (centro.size == 1 && area.size == 1) {
                         val c = centro[0]
                         val a = area[0]
                         val q = Query()
@@ -130,9 +130,9 @@ internal constructor(private val roomRepository: AppRepository, private val retr
                         u.areaId = q.areaId
                         u.estado = 1
                         updateUsuario(u, q)
-                    } else {
-                        sync(u.usuarioId, v)
-                    }
+//                    } else {
+//                        sync(u.usuarioId, v)
+//                    }
                 }
 
                 override fun onError(e: Throwable) {

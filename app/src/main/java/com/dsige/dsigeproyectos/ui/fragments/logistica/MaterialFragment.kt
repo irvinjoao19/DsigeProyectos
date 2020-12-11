@@ -188,6 +188,9 @@ class MaterialFragment : DaggerFragment(), View.OnClickListener {
 
     private fun validateAprobacion() {
 
+
+
+
     }
 
     private fun load() {
