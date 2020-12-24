@@ -36,7 +36,7 @@ class CampoJefeAdapter(var listener: OnItemClickListener.CampoJefeListener) :
         fun bind(p: CampoJefe, listener: OnItemClickListener.CampoJefeListener) = with(itemView) {
             textView1.text = p.pedcNumero
             textView2.text = p.obraCodigo
-            textView3.text = p.almaCodigo
+            textView3.text = p.almaDescripcion
             textView4.text = p.nomApellidos
             textView5.text = p.nombreOt
             textView6.text = String.format("Fec Ped.: %s", p.pedcFechaEnvio)

@@ -31,7 +31,12 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.fabAprobar -> aprobarOrdenCompra(tipo)
+            R.id.fabAprobarItems -> aprobarItems(tipo)
+            R.id.fabAprobar -> if (tipo == 2) {
+                confirmComentarioAprobar(tipo)
+            } else {
+                aprobarOrdenCompra(tipo)
+            }
             R.id.fabRechazar -> messageDialog(tipo, "D")
             R.id.fabAnular -> messageDialog(tipo, "D")
         }
@@ -43,6 +48,7 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
     private var usuarioId: String = ""
     private var tipo: Int = 0
     private var cabeceraId: Int = 0
+    private var codigo: String = ""
     lateinit var builder: AlertDialog.Builder
     private var dialog: AlertDialog? = null
 
@@ -58,10 +64,11 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         }
     }
 
-    private fun bindUI(codigo: String, t: Int, title: String, u: String, id: Int) {
+    private fun bindUI(c: String, t: Int, title: String, u: String, id: Int) {
         usuarioId = u
         tipo = t
         cabeceraId = id
+        codigo = c
         logisticaViewModel =
             ViewModelProvider(this, viewModelFactory).get(LogisticaViewModel::class.java)
 
@@ -75,10 +82,11 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         fabAprobar.setOnClickListener(this)
         fabRechazar.setOnClickListener(this)
         fabAnular.setOnClickListener(this)
+        fabAprobarItems.setOnClickListener(this)
 
         when (t) {
             1 -> {
-                logisticaViewModel.getPedidoGroupOne(codigo).observe(this, {
+                logisticaViewModel.getPedidoGroupOne(c).observe(this, {
                     layout1.visibility = View.VISIBLE
                     textView1.text = it.nombreTipoPedido
                     textView2.text = it.nombreEmpleado
@@ -103,12 +111,12 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 recyclerView.setHasFixedSize(true)
                 recyclerView.adapter = pedidoAdapter
 
-                logisticaViewModel.getPedidoByCodigo(codigo).observe(this, {
+                logisticaViewModel.getPedidoByCodigo(c).observe(this, {
                     pedidoAdapter.addItems(it)
                 })
             }
             2 -> {
-                logisticaViewModel.getOrdenGroupOne(codigo).observe(this, {
+                logisticaViewModel.getOrdenGroupOne(c).observe(this, {
                     layout2.visibility = View.VISIBLE
                     textView11.text = it.toc
                     textView12.text = it.nroOrden
@@ -137,7 +145,7 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 recyclerView.layoutManager = layoutManager
                 recyclerView.setHasFixedSize(true)
                 recyclerView.adapter = ordenAdapter
-                logisticaViewModel.getOrdenByCodigo(codigo).observe(this, {
+                logisticaViewModel.getOrdenByCodigo(c).observe(this, {
                     ordenAdapter.addItems(it)
                 })
             }
@@ -145,7 +153,7 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 fabAprobar.visibility = View.GONE
                 fabRechazar.visibility = View.GONE
                 fabAnular.visibility = View.VISIBLE
-                logisticaViewModel.getAnulacionGroupOne(codigo).observe(this, {
+                logisticaViewModel.getAnulacionGroupOne(c).observe(this, {
                     layout2.visibility = View.VISIBLE
                     textView11.text = it.toc
                     textView12.text = it.nroOrden
@@ -171,12 +179,13 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 recyclerView.layoutManager = layoutManager
                 recyclerView.setHasFixedSize(true)
                 recyclerView.adapter = ordenAdapter
-                logisticaViewModel.getAnulacionByCodigo(codigo).observe(this, {
+                logisticaViewModel.getAnulacionByCodigo(c).observe(this, {
                     ordenAdapter.addItems(it)
                 })
             }
             4 -> {
-                logisticaViewModel.getCampoJefeGroupOne(codigo).observe(this, {
+                fabAprobarItems.visibility = View.VISIBLE
+                logisticaViewModel.getCampoJefeGroupOne(c.toInt()).observe(this, {
                     layout2.visibility = View.VISIBLE
                     layout3.visibility = View.GONE
                     textView11.text = it.pedcNumero
@@ -206,12 +215,13 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 recyclerView.layoutManager = layoutManager
                 recyclerView.setHasFixedSize(true)
                 recyclerView.adapter = campoJefeGroupAdapter
-                logisticaViewModel.getCampoJefeByCodigo(codigo).observe(this, {
+                logisticaViewModel.getCampoJefeByCodigo(c.toInt()).observe(this, {
                     campoJefeGroupAdapter.addItems(it)
                 })
             }
             5 -> {
-                logisticaViewModel.getCampoTiempoVidaOne(codigo).observe(this, {
+                fabAprobarItems.visibility = View.VISIBLE
+                logisticaViewModel.getCampoTiempoVidaOne(c.toInt()).observe(this, {
                     layout2.visibility = View.VISIBLE
                     layout3.visibility = View.GONE
                     textView11.text = it.pedcNumero
@@ -241,7 +251,7 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
                 recyclerView.layoutManager = layoutManager
                 recyclerView.setHasFixedSize(true)
                 recyclerView.adapter = tiempoVidaGroupAdapter
-                logisticaViewModel.getTiempoVidaByCodigo(codigo).observe(this, {
+                logisticaViewModel.getTiempoVidaByCodigo(c.toInt()).observe(this, {
                     tiempoVidaGroupAdapter.addItems(it)
                 })
             }
@@ -250,7 +260,9 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         logisticaViewModel.mensajeSuccess.observe(this, {
             closeLoad()
             Util.toastMensaje(this, it)
-            finish()
+            if (it != "Cantidades Aprobadas..") {
+                finish()
+            }
         })
         logisticaViewModel.mensajeError.observe(this, {
             closeLoad()
@@ -373,7 +385,7 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         val buttonCancelar: MaterialButton = v.findViewById(R.id.buttonCancelar)
         textviewTitle.text = when (formato) {
             1 -> "Rechazar Pedido"
-            2 -> "Rechazar Orden"
+            2 -> if (tipo == "A") "Aprobar Orden" else "Rechazar Orden"
             3 -> "Anular Orden de Compra"
             4 -> "Rechazar Campo por Jefe"
             else -> "Rechazar Campo por Tiempo de Vida"
@@ -464,12 +476,14 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
     private fun aprobarOrdenCompra(formato: Int) {
         val dialog = MaterialAlertDialogBuilder(this)
             .setTitle("Mensaje")
-            .setMessage(when(formato){
-                1 -> "Deseas aprobar Pedido"
-                2 -> "Deseas aprobar Orden"
-                4 -> "Deseas aprobar Campo por Jefe"
-                else -> "Deseas aprobar Campo por Tiempo de Vida"
-            })
+            .setMessage(
+                when (formato) {
+                    1 -> "Deseas aprobar Pedido"
+                    2 -> "Deseas aprobar Orden"
+                    4 -> "Deseas aprobar Campo por Jefe"
+                    else -> "Deseas aprobar Campo por Tiempo de Vida"
+                }
+            )
             .setPositiveButton("Aceptar") { dialog, _ ->
                 load()
                 val q = Query(cabeceraId, usuarioId, "A", "", "")
@@ -493,4 +507,41 @@ class AprobationDetailActivity : DaggerAppCompatActivity(), View.OnClickListener
         dialog.show()
     }
 
+    private fun aprobarItems(formato: Int) {
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle("Mensaje")
+            .setMessage("Deseas aprobar Items")
+            .setPositiveButton("Aceptar") { dialog, _ ->
+                load()
+                val tipo = when (formato) {
+                    4 -> "1"
+                    else -> "2"
+                }
+                val q = Query(cabeceraId, usuarioId, tipo, "", codigo)
+                when (formato) {
+                    4 -> logisticaViewModel.aprobarItemsCampoJefeTiempoVida(formato, q)
+                    5 -> logisticaViewModel.aprobarItemsCampoJefeTiempoVida(formato, q)
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.cancel()
+            }
+        dialog.show()
+    }
+
+    private fun confirmComentarioAprobar(tipo: Int) {
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle("Mensaje")
+            .setMessage("Desea agregar un comentario ?")
+            .setPositiveButton("SI") { dialog, _ ->
+                messageDialog(tipo, "A")
+                dialog.dismiss()
+            }
+            .setNegativeButton("NO") { dialog, _ ->
+                aprobarOrdenCompra(tipo)
+                dialog.cancel()
+            }
+        dialog.show()
+    }
 }

@@ -19,8 +19,8 @@ interface AlmacenLogisticaDao {
     @Delete
     fun deleteAlmacenLogisticaTask(c: AlmacenLogistica)
 
-    @Query("SELECT * FROM AlmacenLogistica")
-    fun getAlmacenLogisticas(): LiveData<List<AlmacenLogistica>>
+    @Query("SELECT * FROM AlmacenLogistica WHERE sucuCodigo =:c")
+    fun getAlmacenLogisticas(c: String): LiveData<List<AlmacenLogistica>>
 
     @Query("SELECT * FROM AlmacenLogistica")
     fun getAlmacenLogisticaTask(): List<AlmacenLogistica>

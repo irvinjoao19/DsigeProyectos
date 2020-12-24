@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 open class TiempoVida {
 
     @PrimaryKey
-    var id: Int = 0
     var idDet: Int = 0
+    var id: Int = 0
     var pubSucuCodigo: String = ""
     var almaCodigo: String = ""
     var obraCodigo: String = ""

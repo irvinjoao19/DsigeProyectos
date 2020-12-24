@@ -212,4 +212,5 @@
     <string name="aprobation3">Anular Ordenes de Compra</string>
     <string name="aprobation4">Aprobadar Solicitud de Salida de Material de Campo por Jefe</string>
     <string name="aprobation5">Aprobacion de Solicitudes de Campo por Tiempo de Vida</string>
+    <string name="update">Actualizar</string>
 </resources>

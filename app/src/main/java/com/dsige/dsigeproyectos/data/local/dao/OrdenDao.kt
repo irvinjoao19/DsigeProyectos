@@ -43,6 +43,6 @@ interface OrdenDao {
     @Query("SELECT * FROM Orden WHERE nroOrden =:c ")
     fun getOrdenByCodigo(c: String): LiveData<List<Orden>>
 
-    @Query("UPDATE Orden SET estadoId = 0 WHERE id=:i")
+    @Query("UPDATE Orden SET estadoId = 0 WHERE ordenId=:i")
     fun updateAprobacion(i: Int)
 }

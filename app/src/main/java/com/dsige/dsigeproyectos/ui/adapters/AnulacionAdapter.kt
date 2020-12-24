@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.dsige.dsigeproyectos.R
 import com.dsige.dsigeproyectos.data.local.model.logistica.Anulacion
 import com.dsige.dsigeproyectos.ui.listeners.OnItemClickListener
@@ -39,6 +40,12 @@ class AnulacionAdapter(var listener: OnItemClickListener.AnulacionListener) :
             textView3.text = p.contableOt
             textView4.text = p.provee
             textView5.text = p.forma
+
+            if (p.mone.contains("$")){
+                textView6.setTextColor(ContextCompat.getColor(itemView.context,R.color.colorGreen))
+                textView7.setTextColor(ContextCompat.getColor(itemView.context,R.color.colorGreen))
+            }
+
             textView6.text = String.format("Total Inc IGV : %s", p.igv)
             textView7.text = p.mone
             textView8.text = p.fechaEmisionOrden

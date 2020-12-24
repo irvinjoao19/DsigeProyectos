@@ -177,8 +177,8 @@ interface AppRepository {
     fun getPedidoGroup(e: String): LiveData<List<Pedido>>
     fun getPedidoGroupOne(codigo: String): LiveData<Pedido>
     fun getPedidoByCodigo(codigo: String): LiveData<List<Pedido>>
-    fun sendUpdateCantidadPedido(q: Query,tipo:Int): Observable<Mensaje>
-    fun updateCantidadPedido(id: Int, cantidad: Double,tipo:Int): Completable
+    fun sendUpdateCantidadPedido(q: Query, tipo: Int): Observable<Mensaje>
+    fun updateCantidadPedido(id: Int, cantidad: Double, tipo: Int): Completable
 
     //orden
     fun getSyncOrden(q: Query): Observable<List<Orden>>
@@ -229,17 +229,22 @@ interface AppRepository {
     fun getCampoJefes(): LiveData<List<CampoJefe>>
     fun getTiempoVida(): LiveData<List<TiempoVida>>
     fun getLocales(): LiveData<List<Local>>
-    fun getAlmacenLogistica(): LiveData<List<AlmacenLogistica>>
+    fun getAlmacenLogistica(codigo:String): LiveData<List<AlmacenLogistica>>
     fun getSyncCampoJefe(q: Query): Observable<List<CampoJefe>>
     fun getSyncTiempoVida(q: Query): Observable<List<TiempoVida>>
     fun insertCampoJefe(t: List<CampoJefe>): Completable
     fun insertTiempoVida(t: List<TiempoVida>): Completable
-    fun getCampoJefeGroupOne(codigo: String): LiveData<CampoJefe>
-    fun getCampoJefeByCodigo(codigo: String): LiveData<List<CampoJefe>>
-    fun getCampoTiempoVidaOne(codigo: String): LiveData<TiempoVida>
-    fun getTiempoVidaByCodigo(codigo: String): LiveData<List<TiempoVida>>
+    fun getCampoJefeGroupOne(codigo: Int): LiveData<CampoJefe>
+    fun getCampoJefeByCodigo(codigo: Int): LiveData<List<CampoJefe>>
+    fun getCampoTiempoVidaOne(codigo: Int): LiveData<TiempoVida>
+    fun getTiempoVidaByCodigo(codigo: Int): LiveData<List<TiempoVida>>
     fun getOrdenEstados(): LiveData<List<OrdenEstado>>
     fun getOrdenEstadoByOne(): LiveData<OrdenEstado>
-    fun getClearOrden() :Completable
+    fun getClearOrden(): Completable
     fun getComboEstado(): LiveData<ComboEstado>
+    fun getClearPedido(): Completable
+    fun aprobarItemsCampoJefeTiempoVida(q: Query): Observable<Mensaje>
+    fun updateItemsCampoJefeTiempoVida(formato: Int, codigo: Int): Completable
+    fun clearCampoJefe(): Completable
+    fun clearTiempoVida(): Completable
 }

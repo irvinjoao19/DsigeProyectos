@@ -46,6 +46,6 @@ interface PedidoDao {
     @Query("UPDATE Pedido SET cantidadAprobada =:c WHERE id=:i")
     fun updateCantidad(i: Int, c: Double)
 
-    @Query("UPDATE Pedido SET estadoId = 0 WHERE id=:i")
+    @Query("UPDATE Pedido SET estadoId = 0 WHERE pedidoId=:i")
     fun updateAprobacion(i: Int)
 }

@@ -1,7 +1,6 @@
 package com.dsige.dsigeproyectos.data.viewModel
 
 import android.util.Log
-import androidx.core.graphics.rotationMatrix
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -21,7 +20,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -46,35 +44,38 @@ internal constructor(private val roomRepository: AppRepository, private val retr
 
     // pedido
     fun getSyncPedido(u: String) {
-        roomRepository.getSyncPedido(u)
+        roomRepository.getClearPedido()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<List<Pedido>> {
-                override fun onSubscribe(d: Disposable) {
-
-                }
-
-                override fun onNext(t: List<Pedido>) {
-                    insertPedido(t)
-                }
-
-                override fun onError(t: Throwable) {
-                    if (t is HttpException) {
-                        val body = t.response().errorBody()
-                        try {
-                            val error = retrofit.errorConverter.convert(body!!)
-                            mensajeError.postValue(error.Message)
-                        } catch (e1: IOException) {
-                            e1.printStackTrace()
-                        }
-                    } else {
-                        mensajeError.postValue(t.message)
-                    }
-                    loading.value = false
-                }
-
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onError(e: Throwable) {}
                 override fun onComplete() {
+                    roomRepository.getSyncPedido(u)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<List<Pedido>> {
+                            override fun onSubscribe(d: Disposable) {}
+                            override fun onComplete() {}
+                            override fun onNext(t: List<Pedido>) {
+                                insertPedido(t)
+                            }
 
+                            override fun onError(t: Throwable) {
+                                if (t is HttpException) {
+                                    val body = t.response().errorBody()
+                                    try {
+                                        val error = retrofit.errorConverter.convert(body!!)
+                                        mensajeError.postValue(error.Message)
+                                    } catch (e1: IOException) {
+                                        e1.printStackTrace()
+                                    }
+                                } else {
+                                    mensajeError.postValue(t.message)
+                                }
+                                loading.value = false
+                            }
+                        })
                 }
             })
     }
@@ -438,15 +439,15 @@ internal constructor(private val roomRepository: AppRepository, private val retr
         return roomRepository.getTipos()
     }
 
-    fun sendUpdateCantidad(q: Query, id: Int,tipo:Int) {
-        roomRepository.sendUpdateCantidadPedido(q,tipo)
+    fun sendUpdateCantidad(q: Query, id: Int, tipo: Int) {
+        roomRepository.sendUpdateCantidadPedido(q, tipo)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : Observer<Mensaje> {
                 override fun onSubscribe(d: Disposable) {}
                 override fun onComplete() {}
                 override fun onNext(t: Mensaje) {
-                    updateCantidadPedido(id, q.cantidad,tipo)
+                    updateCantidadPedido(id, q.cantidad, tipo)
                 }
 
                 override fun onError(t: Throwable) {
@@ -465,8 +466,8 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             })
     }
 
-    private fun updateCantidadPedido(id: Int, cantidad: Double,tipo:Int) {
-        roomRepository.updateCantidadPedido(id, cantidad,tipo)
+    private fun updateCantidadPedido(id: Int, cantidad: Double, tipo: Int) {
+        roomRepository.updateCantidadPedido(id, cantidad, tipo)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {
@@ -632,8 +633,8 @@ internal constructor(private val roomRepository: AppRepository, private val retr
         return roomRepository.getLocales()
     }
 
-    fun getAlmacenLogistica(): LiveData<List<AlmacenLogistica>> {
-        return roomRepository.getAlmacenLogistica()
+    fun getAlmacenLogistica(codigo: String): LiveData<List<AlmacenLogistica>> {
+        return roomRepository.getAlmacenLogistica(codigo)
     }
 
     // todo campo jefe
@@ -649,29 +650,40 @@ internal constructor(private val roomRepository: AppRepository, private val retr
     }
 
     fun getSyncCampoJefe(q: Query) {
-        roomRepository.getSyncCampoJefe(q)
+        roomRepository.clearCampoJefe()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<List<CampoJefe>> {
+            .subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {}
-                override fun onComplete() {}
-                override fun onNext(t: List<CampoJefe>) {
-                    insertCampoJefe(t)
+                override fun onComplete() {
+                    roomRepository.getSyncCampoJefe(q)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<List<CampoJefe>> {
+                            override fun onSubscribe(d: Disposable) {}
+                            override fun onComplete() {}
+                            override fun onNext(t: List<CampoJefe>) {
+                                insertCampoJefe(t)
+                            }
+
+                            override fun onError(t: Throwable) {
+                                loading.value = false
+                                if (t is HttpException) {
+                                    val b = t.response().errorBody()
+                                    try {
+                                        val error = retrofit.errorConverter.convert(b!!)
+                                        mensajeError.postValue(error.Message)
+                                    } catch (e1: IOException) {
+                                        e1.printStackTrace()
+                                    }
+                                } else {
+                                    mensajeError.postValue(t.message)
+                                }
+                            }
+                        })
                 }
 
-                override fun onError(t: Throwable) {
-                    if (t is HttpException) {
-                        val b = t.response().errorBody()
-                        try {
-                            val error = retrofit.errorConverter.convert(b!!)
-                            mensajeError.postValue(error.Message)
-                        } catch (e1: IOException) {
-                            e1.printStackTrace()
-                        }
-                    } else {
-                        mensajeError.postValue(t.message)
-                    }
-                }
+                override fun onError(e: Throwable) {}
             })
     }
 
@@ -681,20 +693,98 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {}
-                override fun onComplete() {}
+                override fun onComplete() {
+                    loading.value = false
+                }
+
                 override fun onError(e: Throwable) {}
             })
     }
 
     fun getSyncTiempoVida(q: Query) {
-        roomRepository.getSyncTiempoVida(q)
+        roomRepository.clearTiempoVida()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<List<TiempoVida>> {
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {
+                    roomRepository.getSyncTiempoVida(q)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : Observer<List<TiempoVida>> {
+                            override fun onSubscribe(d: Disposable) {}
+                            override fun onComplete() {}
+                            override fun onNext(t: List<TiempoVida>) {
+                                insertTiempoVida(t)
+                            }
+
+                            override fun onError(t: Throwable) {
+                                loading.value = false
+                                if (t is HttpException) {
+                                    val b = t.response().errorBody()
+                                    try {
+                                        val error = retrofit.errorConverter.convert(b!!)
+                                        mensajeError.postValue(error.Message)
+                                    } catch (e1: IOException) {
+                                        e1.printStackTrace()
+                                    }
+                                } else {
+                                    mensajeError.postValue(t.message)
+                                }
+                            }
+                        })
+                }
+
+                override fun onError(e: Throwable) {}
+            })
+    }
+
+    private fun insertTiempoVida(t: List<TiempoVida>) {
+        roomRepository.insertTiempoVida(t)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onError(e: Throwable) {}
+                override fun onComplete() {
+                    loading.value = false
+                }
+            })
+    }
+
+    fun getCampoJefeGroupOne(codigo: Int): LiveData<CampoJefe> {
+        return roomRepository.getCampoJefeGroupOne(codigo)
+    }
+
+    fun getCampoJefeByCodigo(codigo: Int): LiveData<List<CampoJefe>> {
+        return roomRepository.getCampoJefeByCodigo(codigo)
+    }
+
+    fun getCampoTiempoVidaOne(codigo: Int): LiveData<TiempoVida> {
+        return roomRepository.getCampoTiempoVidaOne(codigo)
+    }
+
+    fun getTiempoVidaByCodigo(codigo: Int): LiveData<List<TiempoVida>> {
+        return roomRepository.getTiempoVidaByCodigo(codigo)
+    }
+
+    fun getOrdenEstados(): LiveData<List<OrdenEstado>> {
+        return roomRepository.getOrdenEstados()
+    }
+
+    fun getOrdenEstadoByOne(): LiveData<OrdenEstado> {
+        return roomRepository.getOrdenEstadoByOne()
+    }
+
+    fun aprobarItemsCampoJefeTiempoVida(formato: Int, q: Query) {
+        roomRepository.aprobarItemsCampoJefeTiempoVida(q)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Mensaje> {
                 override fun onSubscribe(d: Disposable) {}
                 override fun onComplete() {}
-                override fun onNext(t: List<TiempoVida>) {
-                    insertTiempoVida(t)
+                override fun onNext(t: Mensaje) {
+                    updateItemsCampoJefeTiempoVida(formato, q.matricula.toInt())
                 }
 
                 override fun onError(t: Throwable) {
@@ -713,8 +803,21 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             })
     }
 
-    private fun insertTiempoVida(t: List<TiempoVida>) {
-        roomRepository.insertTiempoVida(t)
+    private fun updateItemsCampoJefeTiempoVida(formato: Int, id: Int) {
+        roomRepository.updateItemsCampoJefeTiempoVida(formato, id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onError(e: Throwable) {}
+                override fun onComplete() {
+                    mensajeSuccess.value = "Cantidades Aprobadas.."
+                }
+            })
+    }
+
+    fun clearCampoJefe() {
+        roomRepository.clearCampoJefe()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {
@@ -724,28 +827,15 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             })
     }
 
-    fun getCampoJefeGroupOne(codigo: String): LiveData<CampoJefe> {
-        return roomRepository.getCampoJefeGroupOne(codigo)
-    }
-
-    fun getCampoJefeByCodigo(codigo: String): LiveData<List<CampoJefe>> {
-        return roomRepository.getCampoJefeByCodigo(codigo)
-    }
-
-    fun getCampoTiempoVidaOne(codigo: String): LiveData<TiempoVida> {
-        return roomRepository.getCampoTiempoVidaOne(codigo)
-    }
-
-    fun getTiempoVidaByCodigo(codigo: String): LiveData<List<TiempoVida>> {
-        return roomRepository.getTiempoVidaByCodigo(codigo)
-    }
-
-    fun getOrdenEstados(): LiveData<List<OrdenEstado>> {
-        return roomRepository.getOrdenEstados()
-    }
-
-    fun getOrdenEstadoByOne(): LiveData<OrdenEstado> {
-        return roomRepository.getOrdenEstadoByOne()
+    fun clearTiempoVida() {
+        roomRepository.clearTiempoVida()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CompletableObserver {
+                override fun onSubscribe(d: Disposable) {}
+                override fun onComplete() {}
+                override fun onError(e: Throwable) {}
+            })
     }
 
 }

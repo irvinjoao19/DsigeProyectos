@@ -19,7 +19,7 @@ interface TiempoVidaDao {
     @Delete
     fun deleteTiempoVidaTask(c: TiempoVida)
 
-    @Query("SELECT * FROM TiempoVida WHERE estadoId=1")
+    @Query("SELECT * FROM TiempoVida WHERE estadoId=1 GROUP BY id")
     fun getTiempoVidas(): LiveData<List<TiempoVida>>
 
     @Query("SELECT * FROM TiempoVida")
@@ -31,11 +31,14 @@ interface TiempoVidaDao {
     @Query("DELETE FROM TiempoVida")
     fun deleteAll()
 
-    @Query("SELECT * FROM TiempoVida WHERE  obraCodigo=:c GROUP BY obraCodigo")
-    fun getCampoTiempoVidaOne(c: String): LiveData<TiempoVida>
+    @Query("SELECT * FROM TiempoVida WHERE  id=:c GROUP BY id")
+    fun getCampoTiempoVidaOne(c: Int): LiveData<TiempoVida>
 
-    @Query("SELECT * FROM TiempoVida WHERE obraCodigo=:c")
-    fun getTiempoVidaByCodigo(c: String): LiveData<List<TiempoVida>>
+    @Query("SELECT * FROM TiempoVida WHERE id=:c")
+    fun getTiempoVidaByCodigo(c: Int): LiveData<List<TiempoVida>>
+
+    @Query("SELECT * FROM TiempoVida WHERE id=:c")
+    fun getTiempoVidaByCodigoTask(c: Int): List<TiempoVida>
 
     @Query("UPDATE TiempoVida SET estadoId = 0 WHERE id=:i")
     fun updateAprobacion(i: Int)

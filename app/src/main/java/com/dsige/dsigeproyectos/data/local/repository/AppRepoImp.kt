@@ -1368,8 +1368,8 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return dataBase.localDao().getLocales()
     }
 
-    override fun getAlmacenLogistica(): LiveData<List<AlmacenLogistica>> {
-        return dataBase.almacenLDao().getAlmacenLogisticas()
+    override fun getAlmacenLogistica(codigo:String): LiveData<List<AlmacenLogistica>> {
+        return dataBase.almacenLDao().getAlmacenLogisticas(codigo)
     }
 
     override fun getSyncCampoJefe(q: Query): Observable<List<CampoJefe>> {
@@ -1401,19 +1401,19 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         }
     }
 
-    override fun getCampoJefeGroupOne(codigo: String): LiveData<CampoJefe> {
+    override fun getCampoJefeGroupOne(codigo: Int): LiveData<CampoJefe> {
         return dataBase.campoJefeDao().getCampoJefeGroupOne(codigo)
     }
 
-    override fun getCampoJefeByCodigo(codigo: String): LiveData<List<CampoJefe>> {
+    override fun getCampoJefeByCodigo(codigo: Int): LiveData<List<CampoJefe>> {
         return dataBase.campoJefeDao().getCampoJefeByCodigo(codigo)
     }
 
-    override fun getCampoTiempoVidaOne(codigo: String): LiveData<TiempoVida> {
+    override fun getCampoTiempoVidaOne(codigo: Int): LiveData<TiempoVida> {
         return dataBase.tiempoVidaDao().getCampoTiempoVidaOne(codigo)
     }
 
-    override fun getTiempoVidaByCodigo(codigo: String): LiveData<List<TiempoVida>> {
+    override fun getTiempoVidaByCodigo(codigo: Int): LiveData<List<TiempoVida>> {
         return dataBase.tiempoVidaDao().getTiempoVidaByCodigo(codigo)
     }
 
@@ -1433,5 +1433,47 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
 
     override fun getComboEstado(): LiveData<ComboEstado> {
         return dataBase.comboEstadoDao().getComboEstado()
+    }
+
+    override fun getClearPedido(): Completable {
+        return Completable.fromAction {
+            dataBase.pedidoDao().deleteAll()
+        }
+    }
+
+    override fun aprobarItemsCampoJefeTiempoVida(q: Query): Observable<Mensaje> {
+        val json = Gson().toJson(q)
+        Log.i("TAG", json)
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        return apiService.aprobarItemsCampoJefeTiempoVida(body)
+    }
+
+    override fun updateItemsCampoJefeTiempoVida(formato: Int, codigo: Int): Completable {
+        return Completable.fromAction {
+            if (formato == 4) {
+                val list = dataBase.campoJefeDao().getCampoJefeByCodigoTask(codigo)
+                for (c: CampoJefe in list) {
+                    dataBase.campoJefeDao().updateCantidad(c.id, c.cantidadPedida)
+                }
+            } else {
+                val list = dataBase.tiempoVidaDao().getTiempoVidaByCodigoTask(codigo)
+                for (t: TiempoVida in list) {
+                    dataBase.tiempoVidaDao().updateCantidad(t.id, t.cantidadPedida)
+                }
+            }
+        }
+    }
+
+    override fun clearCampoJefe(): Completable {
+        return Completable.fromAction {
+            dataBase.campoJefeDao().deleteAll()
+        }
+    }
+
+    override fun clearTiempoVida(): Completable {
+        return Completable.fromAction {
+            dataBase.tiempoVidaDao().deleteAll()
+        }
     }
 }

@@ -9,4 +9,5 @@ open class AlmacenLogistica {
     @PrimaryKey
     var codigo: String = ""
     var nombre: String = ""
+    var sucuCodigo: String = ""
 }

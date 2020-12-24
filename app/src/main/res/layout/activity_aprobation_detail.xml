@@ -327,6 +327,16 @@
         fab:fab_labelStyle="@style/menu_labels_style">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAprobarItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/material_orange_900"
+            fab:fab_colorPressed="@color/material_orange_800"
+            android:visibility="gone"
+            fab:fab_icon="@drawable/ic_check"
+            fab:fab_title="Aprobar Items" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAprobar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

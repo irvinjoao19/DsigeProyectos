@@ -162,4 +162,8 @@ interface ApiService {
     @Headers("Cache-Control: no-cache")
     @POST("TiempoVida")
     fun getTiempoVida(@Body query: RequestBody): Observable<List<TiempoVida>>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("AprobarItemsCampoJefeTiempoVida")
+    fun aprobarItemsCampoJefeTiempoVida(@Body body: RequestBody): Observable<Mensaje>
 }

@@ -44,6 +44,14 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (tipo) {
+            1->{
+                logisticaViewModel.setLoading(true)
+                logisticaViewModel.getSyncPedido(usuarioId)
+            }
+            2->{
+                logisticaViewModel.setLoading(true)
+                logisticaViewModel.getSyncOrden(q)
+            }
             3 -> {
                 val fi = editTextFinicio.text.toString()
                 val ff = editTextFfinal.text.toString()
@@ -74,6 +82,7 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
         menuInflater.inflate(R.menu.menu_anulacion, menu)
         if (tipo == 1 || tipo == 2) {
             menu.findItem(R.id.search).setVisible(false).isEnabled = false
+            menu.findItem(R.id.update).setVisible(true).isEnabled = true
         }
         return true
     }
@@ -130,7 +139,7 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                                 .putExtra("tipo", tipo)
                                 .putExtra("title", title)
                                 .putExtra("usuarioId", u)
-                                .putExtra("id", p.id)
+                                .putExtra("id", p.pedidoId)
                         )
                     }
                 })
@@ -163,7 +172,7 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                                 .putExtra("tipo", tipo)
                                 .putExtra("title", title)
                                 .putExtra("usuarioId", u)
-                                .putExtra("id", o.id)
+                                .putExtra("id", o.ordenId)
                         )
                     }
                 })
@@ -206,7 +215,7 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                                     .putExtra("tipo", tipo)
                                     .putExtra("title", title)
                                     .putExtra("usuarioId", u)
-                                    .putExtra("id", a.id)
+                                    .putExtra("id", a.ordenId)
                             )
                         }
                     })
@@ -223,6 +232,7 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 logisticaViewModel.ordenSearch.value = null
             }
             4 -> {
+                logisticaViewModel.clearCampoJefe()
                 logisticaViewModel.setLoading(false)
                 layout4.visibility = View.VISIBLE
                 editTextLocal.setOnClickListener(this)
@@ -236,11 +246,11 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                                     this@AprobacionActivity,
                                     AprobationDetailActivity::class.java
                                 )
-                                    .putExtra("codigo", c.obraCodigo)
+                                    .putExtra("codigo", c.id.toString())
                                     .putExtra("tipo", tipo)
                                     .putExtra("title", title)
                                     .putExtra("usuarioId", u)
-                                    .putExtra("id", c.id)
+                                    .putExtra("id", c.idDet)
                             )
                         }
                     })
@@ -255,6 +265,7 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                 })
             }
             5 -> {
+                logisticaViewModel.clearTiempoVida()
                 logisticaViewModel.setLoading(false)
                 layout4.visibility = View.VISIBLE
                 editTextLocal.setOnClickListener(this)
@@ -268,11 +279,11 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                                     this@AprobacionActivity,
                                     AprobationDetailActivity::class.java
                                 )
-                                    .putExtra("codigo", t.obraCodigo)
+                                    .putExtra("codigo", t.id.toString())
                                     .putExtra("tipo", tipo)
                                     .putExtra("title", title)
                                     .putExtra("usuarioId", u)
-                                    .putExtra("id", t.id)
+                                    .putExtra("id", t.idDet)
                             )
                         }
                     })
@@ -401,7 +412,7 @@ class AprobacionActivity : DaggerAppCompatActivity(), View.OnClickListener {
                         }
                     })
                 recyclerView.adapter = almacenAdapter
-                logisticaViewModel.getAlmacenLogistica().observe(this, {
+                logisticaViewModel.getAlmacenLogistica(q.sucursalId).observe(this, {
                     almacenAdapter.addItems(it)
                 })
             }

@@ -60,7 +60,7 @@ import com.dsige.dsigeproyectos.data.local.model.trinidad.*
         Local::class,
         OrdenEstado::class
     ],
-    version = 31,
+    version = 33,
     exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {

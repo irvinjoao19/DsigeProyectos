@@ -7,4 +7,11 @@
         android:title="@string/enviar"
         android:icon="@drawable/ic_check"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/update"
+        android:title="@string/update"
+        android:icon="@drawable/ic_refresh"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

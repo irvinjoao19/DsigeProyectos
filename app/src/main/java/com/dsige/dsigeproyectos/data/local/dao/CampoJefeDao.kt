@@ -19,7 +19,7 @@ interface CampoJefeDao {
     @Delete
     fun deleteCampoJefeTask(c: CampoJefe)
 
-    @Query("SELECT * FROM CampoJefe WHERE estadoId=1")
+    @Query("SELECT * FROM CampoJefe WHERE estadoId=1 GROUP BY id")
     fun getCampoJefes(): LiveData<List<CampoJefe>>
 
     @Query("SELECT * FROM CampoJefe")
@@ -31,15 +31,19 @@ interface CampoJefeDao {
     @Query("DELETE FROM CampoJefe")
     fun deleteAll()
 
-    @Query("SELECT * FROM CampoJefe WHERE obraCodigo=:c GROUP BY obraCodigo")
-    fun getCampoJefeGroupOne(c: String): LiveData<CampoJefe>
+    @Query("SELECT * FROM CampoJefe WHERE id=:c GROUP BY id")
+    fun getCampoJefeGroupOne(c: Int): LiveData<CampoJefe>
 
-    @Query("SELECT * FROM CampoJefe WHERE obraCodigo=:c")
-    fun getCampoJefeByCodigo(c: String): LiveData<List<CampoJefe>>
+    @Query("SELECT * FROM CampoJefe WHERE id=:c")
+    fun getCampoJefeByCodigo(c: Int): LiveData<List<CampoJefe>>
+
+    @Query("SELECT * FROM CampoJefe WHERE id=:c")
+    fun getCampoJefeByCodigoTask(c: Int): List<CampoJefe>
 
     @Query("UPDATE CampoJefe SET estadoId = 0 WHERE id=:i")
     fun updateAprobacion(i: Int)
 
     @Query("UPDATE CampoJefe SET cantidadAprobada =:c WHERE id=:i")
     fun updateCantidad(i: Int, c: Double)
+
 }

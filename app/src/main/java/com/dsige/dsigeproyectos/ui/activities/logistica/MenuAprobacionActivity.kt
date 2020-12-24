@@ -47,11 +47,11 @@ class MenuAprobacionActivity : AppCompatActivity() {
         recyclerView.adapter = menuAdapter
 
         val menus: ArrayList<MenuPrincipal> = ArrayList()
-        menus.add(MenuPrincipal(1, getString(R.string.aprobation1), R.drawable.ic_1))
+//        menus.add(MenuPrincipal(1, getString(R.string.aprobation1), R.drawable.ic_1))
         menus.add(MenuPrincipal(2, getString(R.string.aprobation2), R.drawable.ic_2))
-        menus.add(MenuPrincipal(3, getString(R.string.aprobation3), R.drawable.ic_3))
-        menus.add(MenuPrincipal(4, getString(R.string.aprobation4), R.drawable.ic_4))
-        menus.add(MenuPrincipal(5, getString(R.string.aprobation5), R.drawable.ic_5))
+//        menus.add(MenuPrincipal(3, getString(R.string.aprobation3), R.drawable.ic_3))
+//        menus.add(MenuPrincipal(4, getString(R.string.aprobation4), R.drawable.ic_4))
+//        menus.add(MenuPrincipal(5, getString(R.string.aprobation5), R.drawable.ic_5))
         menuAdapter.addItems(menus)
     }
 

@@ -134,8 +134,8 @@ class SubMainActivity : DaggerAppCompatActivity() {
                 )
             }
             2 -> {
-                menus.add(MenuPrincipal(1, "Stock de Materiales", R.drawable.ic_stock))
-                menus.add(MenuPrincipal(2, "Solicitud de Requerimiento", R.drawable.ic_requerimiento))
+//                menus.add(MenuPrincipal(1, "Stock de Materiales", R.drawable.ic_stock))
+//                menus.add(MenuPrincipal(2, "Solicitud de Requerimiento", R.drawable.ic_requerimiento))
                 menus.add(MenuPrincipal(3, "Bandeja de Aprobaciones", R.drawable.ic_bandeja))
             }
             4 -> {
