@@ -32,5 +32,6 @@ open class Sync {
     var almacenes: List<AlmacenLogistica> = ArrayList()
     var locales: List<Local> = ArrayList()
     var ordenEstados: List<OrdenEstado> = ArrayList()
+    var menu: List<MenuLogistica> = ArrayList()
 
 }

@@ -58,9 +58,10 @@ import com.dsige.dsigeproyectos.data.local.model.trinidad.*
         CampoJefe::class,
         AlmacenLogistica::class,
         Local::class,
-        OrdenEstado::class
+        OrdenEstado::class,
+        MenuLogistica::class
     ],
-    version = 33,
+    version = 34,
     exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
@@ -119,6 +120,7 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun almacenLDao(): AlmacenLogisticaDao
     abstract fun localDao(): LocalDao
     abstract fun ordenEstadoDao(): OrdenEstadoDao
+    abstract fun menuLogisticaDao(): MenuLogisticaDao
 
 
     companion object {

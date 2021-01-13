@@ -58,6 +58,8 @@ abstract class ActivityBindingModule {
     internal abstract fun bindRequerimientoSolicitudActivity(): RequerimientoSolicitudActivity
 
     // TODO LOGISTICA
+    @ContributesAndroidInjector
+    internal abstract fun bindMenuAprobacionActivity(): MenuAprobacionActivity
 
     @ContributesAndroidInjector
     internal abstract fun bindAprobacionActivity(): AprobacionActivity
@@ -70,4 +72,6 @@ abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = [FragmentBindingModule.Requerimiento::class])
     internal abstract fun bindRequerimientoFormActivity(): RequerimientoFormActivity
+
+
 }

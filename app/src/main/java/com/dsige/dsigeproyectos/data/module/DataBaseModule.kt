@@ -258,4 +258,8 @@ class DataBaseModule {
     internal fun provideOrdenEstadoDao(appDataBase: AppDataBase): OrdenEstadoDao {
         return appDataBase.ordenEstadoDao()
     }
+    @Provides
+    internal fun provideMenuLogisticaDao(appDataBase: AppDataBase): MenuLogisticaDao {
+        return appDataBase.menuLogisticaDao()
+    }
 }

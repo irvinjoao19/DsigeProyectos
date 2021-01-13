@@ -247,4 +247,5 @@ interface AppRepository {
     fun updateItemsCampoJefeTiempoVida(formato: Int, codigo: Int): Completable
     fun clearCampoJefe(): Completable
     fun clearTiempoVida(): Completable
+    fun getMenuLogistica(): LiveData<List<MenuLogistica>>
 }

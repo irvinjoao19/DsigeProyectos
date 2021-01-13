@@ -253,6 +253,10 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
             if (c4 != null) {
                 dataBase.ordenEstadoDao().insertOrdenEstadoListTask(c4)
             }
+            val c5: List<MenuLogistica>? = s.menu
+            if (c5 != null) {
+                dataBase.menuLogisticaDao().insertMenuLogisticaListTask(c5)
+            }
         }
     }
 
@@ -1368,7 +1372,7 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return dataBase.localDao().getLocales()
     }
 
-    override fun getAlmacenLogistica(codigo:String): LiveData<List<AlmacenLogistica>> {
+    override fun getAlmacenLogistica(codigo: String): LiveData<List<AlmacenLogistica>> {
         return dataBase.almacenLDao().getAlmacenLogisticas(codigo)
     }
 
@@ -1475,5 +1479,9 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
         return Completable.fromAction {
             dataBase.tiempoVidaDao().deleteAll()
         }
+    }
+
+    override fun getMenuLogistica(): LiveData<List<MenuLogistica>> {
+        return dataBase.menuLogisticaDao().getMenuLogisticas()
     }
 }

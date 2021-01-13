@@ -838,4 +838,8 @@ internal constructor(private val roomRepository: AppRepository, private val retr
             })
     }
 
+    fun getMenuLogistica() : LiveData<List<MenuLogistica>> {
+        return roomRepository.getMenuLogistica()
+    }
+
 }

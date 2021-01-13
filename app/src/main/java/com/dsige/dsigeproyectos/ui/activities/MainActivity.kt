@@ -2,10 +2,8 @@ package com.dsige.dsigeproyectos.ui.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.SubMenu
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -41,7 +39,7 @@ class MainActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_main)
         usuarioViewModel =
             ViewModelProvider(this, viewModelFactory).get(UsuarioViewModel::class.java)
-        usuarioViewModel.user.observe(this, Observer { u ->
+        usuarioViewModel.user.observe(this, { u ->
             if (u != null) {
                 bindUI(u)
             } else {
@@ -51,6 +49,9 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun bindUI(u: Usuario) {
+        setSupportActionBar(toolbar)
+        supportActionBar!!.title = u.nombre
+
         val menuAdapter = MenuAdapter(object : OnItemClickListener.MenuListener {
             override fun onItemClick(m: MenuPrincipal, view: View, position: Int) {
                 when (m.id) {

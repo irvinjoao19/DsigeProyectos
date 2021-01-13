@@ -12,6 +12,10 @@ interface OnItemClickListener {
         fun onItemClick(m: MenuPrincipal, view: View, position: Int)
     }
 
+    interface MenuLogisticaListener {
+        fun onItemClick(m: MenuLogistica, view: View, position: Int)
+    }
+
     interface RegistroListener {
         fun onItemClick(r: Registro, view: View, position: Int)
     }
