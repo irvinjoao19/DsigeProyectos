@@ -9,6 +9,7 @@ import androidx.paging.toLiveData
 import com.dsige.dsigeproyectos.helper.Mensaje
 import com.dsige.dsigeproyectos.helper.Util
 import com.dsige.dsigeproyectos.data.local.AppDataBase
+import com.dsige.dsigeproyectos.data.local.dao.*
 import com.dsige.dsigeproyectos.data.local.model.*
 import com.dsige.dsigeproyectos.data.local.model.engie.*
 import com.dsige.dsigeproyectos.data.local.model.logistica.*
@@ -87,29 +88,54 @@ class AppRepoImp(private val apiService: ApiService, private val dataBase: AppDa
 
     override fun deleteUsuario(): Completable {
         return Completable.fromAction {
-            dataBase.usuarioDao().deleteAll()
-            dataBase.registroDao().deleteAll()
-            dataBase.registroDetalleDao().deleteAll()
-            dataBase.parametroTDao().deleteAll()
-            dataBase.parametroEDao().deleteAll()
-            dataBase.sucursalDao().deleteAll()
-            dataBase.centroCostosDao().deleteAll()
-            dataBase.areaDao().deleteAll()
-            dataBase.almacenDao().deleteAll()
-
-            dataBase.parteDiarioDao().deleteAll()
-            dataBase.registroBaremoDao().deleteAll()
-            dataBase.registroMaterialDao().deleteAll()
-            dataBase.registroPhotoDao().deleteAll()
-            dataBase.baremoDao().deleteAll()
-            dataBase.materialDao().deleteAll()
-            dataBase.obraDao().deleteAll()
-            dataBase.estadoDao().deleteAll()
-            dataBase.articuloDao().deleteAll()
-
-            dataBase.coordinadorDao().deleteAll()
-            dataBase.actividadDao().deleteAll()
-            dataBase.medidorDao().deleteAll()
+         dataBase.usuarioDao().deleteAll()
+         dataBase.parametroEDao().deleteAll()
+         dataBase.parametroTDao().deleteAll()
+         dataBase.registroDao().deleteAll()
+         dataBase.registroDetalleDao().deleteAll()
+         dataBase.vehiculoDao().deleteAll()
+         dataBase.vehiculoControlDao().deleteAll()
+         dataBase.vehiculoValesDao().deleteAll()
+         dataBase.estadoDao().deleteAll()
+         dataBase.parteDiarioDao().deleteAll()
+         dataBase.registroMaterialDao().deleteAll()
+         dataBase.registroBaremoDao().deleteAll()
+         dataBase.registroPhotoDao().deleteAll()
+         dataBase.obraDao().deleteAll()
+         dataBase.materialDao().deleteAll()
+         dataBase.articuloDao().deleteAll()
+         dataBase.baremoDao().deleteAll()
+         dataBase.areaDao().deleteAll()
+         dataBase.centroCostosDao().deleteAll()
+         dataBase.cuadrillaDao().deleteAll()
+         dataBase.almacenDao().deleteAll()
+         dataBase.coordinadorDao().deleteAll()
+         dataBase.actividadDao().deleteAll()
+         dataBase.medidorDao().deleteAll()
+         dataBase.sucursalDao().deleteAll()
+         dataBase.personalDao().deleteAll()
+         dataBase.solicitudDao().deleteAll()
+         dataBase.registroSolicitudMaterialDao().deleteAll()
+         dataBase.registroSolicitudPhotoDao().deleteAll()
+         dataBase.tipoDevolucionDao().deleteAll()
+         dataBase.pedidoDao().deleteAll()
+         dataBase.ordenDao().deleteAll()
+         dataBase.ordenDetalleDao().deleteAll()
+         dataBase.requerimientoDao().deleteAll()
+         dataBase.requerimientoDetalleDao().deleteAll()
+         dataBase.delegacionDao().deleteAll()
+         dataBase.requerimientoMaterialDao().deleteAll()
+         dataBase.requerimientoEstadoDao().deleteAll()
+         dataBase.requerimientoTipoDao().deleteAll()
+         dataBase.requerimientoCentroCostoDao().deleteAll()
+         dataBase.comboEstadoDao().deleteAll()
+         dataBase.anulacionDao().deleteAll()
+         dataBase.tiempoVidaDao().deleteAll()
+         dataBase.campoJefeDao().deleteAll()
+         dataBase.almacenLDao().deleteAll()
+         dataBase.localDao().deleteAll()
+         dataBase.ordenEstadoDao().deleteAll()
+         dataBase.menuLogisticaDao().deleteAll()
         }
     }
 
